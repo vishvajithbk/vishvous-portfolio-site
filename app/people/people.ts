@@ -19,7 +19,7 @@ const featuredPeople: Person[] = [
 
 const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
-const temporaryPeople: Person[] = Array.from({ length: 43 }, (_, index) => {
+const temporaryPeople: Person[] = Array.from({ length: 33 }, (_, index) => {
   const name = Array.from(
     { length: 4 },
     (_, letterIndex) => alphabet[(index * 4 + letterIndex) % alphabet.length],

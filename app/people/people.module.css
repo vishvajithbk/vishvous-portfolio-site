@@ -38,18 +38,6 @@
   isolation: isolate;
 }
 
-.card[data-format="landscape"] {
-  aspect-ratio: 16 / 10;
-}
-
-.card[data-format="square"] {
-  aspect-ratio: 1;
-}
-
-.card[data-format="tall"] {
-  aspect-ratio: 2 / 3;
-}
-
 .portrait {
   position: absolute;
   inset: 0;

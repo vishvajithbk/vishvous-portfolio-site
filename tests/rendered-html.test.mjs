@@ -77,6 +77,6 @@ test("renders the initial three-column People feed with names only", async () =>
     assert.match(html, new RegExp(name.replaceAll(".", "\\.")), name);
   }
 
-  assert.match(html, /Showing 15 people\. More load while scrolling\./i);
+  assert.match(html, /Showing 15 of 40 people\. More load while scrolling\./i);
   assert.doesNotMatch(html, /Add Member|Connecting|@user|23m ago/i);
 });

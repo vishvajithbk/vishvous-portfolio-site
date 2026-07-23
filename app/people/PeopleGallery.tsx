@@ -10,32 +10,15 @@ const INITIAL_VISIBLE_COUNT = 15;
 const LOAD_BATCH_SIZE = 9;
 const INFLUENCE_INSERT_INDEX = 24;
 
-const cardFormats = [
-  "portrait",
-  "landscape",
-  "tall",
-  "landscape",
-  "tall",
-  "portrait",
-  "tall",
-  "square",
-  "landscape",
-  "square",
-  "portrait",
-  "tall",
-] as const;
-
 type RenderedPerson = {
   person: Person;
   position: number;
-  format: (typeof cardFormats)[number];
 };
 
 function buildVisiblePeople(count: number): RenderedPerson[] {
-  return Array.from({ length: count }, (_, position) => ({
-    person: people[position % people.length],
+  return people.slice(0, count).map((person, position) => ({
+    person,
     position,
-    format: cardFormats[position % cardFormats.length],
   }));
 }
 
@@ -58,7 +41,7 @@ function MasonryGallery({
           role="presentation"
           key={columnIndex}
         >
-          {column.map(({ person, position, format }) => (
+          {column.map(({ person, position }) => (
             <div
               className={styles.galleryItem}
               role="listitem"
@@ -66,7 +49,6 @@ function MasonryGallery({
             >
               <figure
                 className={styles.card}
-                data-format={format}
                 data-has-image={person.image ? "true" : "false"}
               >
                 <div className={styles.portrait}>
@@ -113,20 +95,32 @@ export function PeopleGallery() {
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const visiblePeople = buildVisiblePeople(visibleCount);
+  const hasMorePeople = visibleCount < people.length;
   const peopleBeforePassage = visiblePeople.slice(0, INFLUENCE_INSERT_INDEX);
   const peopleAfterPassage = visiblePeople.slice(INFLUENCE_INSERT_INDEX);
 
   useEffect(() => {
     const loadMoreElement = loadMoreRef.current;
 
-    if (!loadMoreElement || !("IntersectionObserver" in window)) {
+    if (!loadMoreElement || !hasMorePeople) {
       return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      const fallbackTimer = window.setTimeout(
+        () => setVisibleCount(people.length),
+        0,
+      );
+
+      return () => window.clearTimeout(fallbackTimer);
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisibleCount((currentCount) => currentCount + LOAD_BATCH_SIZE);
+          setVisibleCount((currentCount) =>
+            Math.min(currentCount + LOAD_BATCH_SIZE, people.length),
+          );
         }
       },
       { rootMargin: "0px 0px 600px" },
@@ -135,7 +129,7 @@ export function PeopleGallery() {
     observer.observe(loadMoreElement);
 
     return () => observer.disconnect();
-  }, []);
+  }, [hasMorePeople]);
 
   return (
     <section
@@ -167,7 +161,9 @@ export function PeopleGallery() {
         aria-live="polite"
       >
         <span className="sr-only">
-          {`Showing ${visibleCount} people. More load while scrolling.`}
+          {hasMorePeople
+            ? `Showing ${visibleCount} of ${people.length} people. More load while scrolling.`
+            : `All ${people.length} people shown.`}
         </span>
       </div>
     </section>
