@@ -8,7 +8,6 @@ import styles from "./people.module.css";
 const COLUMN_COUNT = 3;
 const INITIAL_VISIBLE_COUNT = 15;
 const LOAD_BATCH_SIZE = 9;
-const INFLUENCE_INSERT_INDEX = 24;
 
 type RenderedPerson = {
   person: Person;
@@ -96,8 +95,6 @@ export function PeopleGallery() {
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const visiblePeople = buildVisiblePeople(visibleCount);
   const hasMorePeople = visibleCount < people.length;
-  const peopleBeforePassage = visiblePeople.slice(0, INFLUENCE_INSERT_INDEX);
-  const peopleAfterPassage = visiblePeople.slice(INFLUENCE_INSERT_INDEX);
 
   useEffect(() => {
     const loadMoreElement = loadMoreRef.current;
@@ -136,24 +133,11 @@ export function PeopleGallery() {
       className={styles.feed}
       aria-label="People who shaped Vishva's thinking"
     >
-      <MasonryGallery
-        entries={peopleBeforePassage}
-        label="People gallery"
-      />
+      <div className={styles.influenceSection}>
+        <p className={styles.influencePassage}>{peopleInfluencePassage}</p>
+      </div>
 
-      {visibleCount >= INFLUENCE_INSERT_INDEX ? (
-        <>
-          <div className={styles.influenceSection}>
-            <p className={styles.influencePassage}>{peopleInfluencePassage}</p>
-          </div>
-          {peopleAfterPassage.length > 0 ? (
-            <MasonryGallery
-              entries={peopleAfterPassage}
-              label="More people"
-            />
-          ) : null}
-        </>
-      ) : null}
+      <MasonryGallery entries={visiblePeople} label="People gallery" />
 
       <div
         ref={loadMoreRef}

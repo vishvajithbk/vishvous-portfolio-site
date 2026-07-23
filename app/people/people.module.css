@@ -116,9 +116,9 @@
 
 .influenceSection {
   display: grid;
-  min-height: clamp(360px, 40vw, 560px);
   margin: 0;
-  padding: clamp(72px, 10vw, 144px) clamp(24px, 8vw, 120px);
+  padding: clamp(8px, 1.5vw, 20px) clamp(24px, 8vw, 120px)
+    clamp(72px, 8vw, 112px);
   place-items: center;
 }
 
@@ -169,8 +169,7 @@
   }
 
   .influenceSection {
-    min-height: 320px;
-    padding: 64px 12px;
+    padding: 0 12px 56px;
   }
 }
 

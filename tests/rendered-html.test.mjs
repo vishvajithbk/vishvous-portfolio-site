@@ -78,5 +78,10 @@ test("renders the initial three-column People feed with names only", async () =>
   }
 
   assert.match(html, /Showing 15 of 40 people\. More load while scrolling\./i);
+  assert.ok(
+    html.indexOf("The people gathered here") <
+      html.indexOf('aria-label="People gallery"'),
+    "the influence passage should appear before the profile cards",
+  );
   assert.doesNotMatch(html, /Add Member|Connecting|@user|23m ago/i);
 });
