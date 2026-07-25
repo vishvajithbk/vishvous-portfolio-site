@@ -119,9 +119,9 @@
   position: relative;
   display: grid;
   width: 100%;
-  min-height: clamp(360px, 33.333vw, 520px);
-  margin: 0;
-  padding: clamp(52px, 8vw, 112px);
+  min-height: clamp(234px, 21.666vw, 338px);
+  margin: clamp(14px, 1.5vw, 22px) 0 0;
+  padding: clamp(36px, 4vw, 56px);
   overflow: hidden;
   background: #403a31;
   isolation: isolate;
@@ -213,8 +213,8 @@
   }
 
   .influenceSection {
-    min-height: 360px;
-    padding: 48px 20px;
+    min-height: 234px;
+    padding: 32px 20px;
   }
 
   .influencePassage {
