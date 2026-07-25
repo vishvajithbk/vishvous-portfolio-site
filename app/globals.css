@@ -62,6 +62,7 @@
   /* Light appearance */
   --color-canvas: #ffffff;
   --color-text: #151515;
+  --color-header-interactive: #4a4a46;
   --color-text-muted: #74746f;
   --color-rule: #dededb;
   --color-surface-card: #f3f3f3;
@@ -86,6 +87,7 @@
   --state-muted-opacity: 0.37;
   --color-canvas: #000000;
   --color-text: #f2f2ef;
+  --color-header-interactive: #b8b8b2;
   --color-text-muted: #969690;
   --color-rule: #343432;
   --color-surface-card: #2a2a2a;
@@ -174,12 +176,13 @@ button:disabled {
 
 .wordmark {
   justify-self: start;
-  color: inherit;
+  color: var(--color-header-interactive);
   font-size: var(--font-size-body);
   font-style: normal;
   font-weight: var(--font-weight-brand);
   letter-spacing: var(--tracking-brand);
   line-height: var(--line-height-tight);
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
 .site-header__center {
@@ -203,7 +206,7 @@ button:disabled {
   display: inline-flex;
   align-items: center;
   min-height: 30px;
-  color: inherit;
+  color: var(--color-header-interactive);
   font-size: var(--font-size-body);
   font-style: normal;
   font-weight: var(--font-weight-medium);
@@ -237,6 +240,7 @@ button:disabled {
   place-items: center;
   border: 0;
   background: transparent;
+  color: var(--color-header-interactive);
   cursor: pointer;
   opacity: var(--state-muted-opacity);
   transition:
@@ -253,6 +257,7 @@ button:disabled {
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .wordmark:hover,
   .navigation a:hover,
   .appearance-dot:hover {
     color: var(--color-interactive-hover);
