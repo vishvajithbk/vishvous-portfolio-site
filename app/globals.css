@@ -81,6 +81,7 @@
   --site-header-height: 62.5px;
   --content-width: 52.5vw;
   --content-max-width: 826px;
+  --people-hero-width: clamp(320px, 50vw, 760px);
   color-scheme: light;
 }
 
@@ -288,11 +289,25 @@ button:disabled {
 }
 
 .header-rule {
+  display: flex;
+  align-items: center;
   width: var(--content-width);
   max-width: var(--content-max-width);
   height: 0.5px;
   margin: 0 auto;
+  gap: 0;
+}
+
+.header-rule::before,
+.header-rule::after {
+  height: 0.5px;
+  flex: 1 1 auto;
   background: var(--color-rule);
+  content: "";
+}
+
+body:has(.peoplePage) .header-rule {
+  gap: min(var(--people-hero-width), calc(100vw - 40px));
 }
 
 .page {

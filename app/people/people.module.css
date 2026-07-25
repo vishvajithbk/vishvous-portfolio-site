@@ -118,9 +118,9 @@
 .influenceSection {
   position: relative;
   display: grid;
-  width: 100%;
+  width: min(var(--people-hero-width), calc(100% - 40px));
   min-height: clamp(234px, 21.666vw, 338px);
-  margin: clamp(14px, 1.5vw, 22px) 0 0;
+  margin: -1px auto 0;
   padding: clamp(36px, 4vw, 56px);
   overflow: hidden;
   background: #403a31;
@@ -159,7 +159,7 @@
   margin: 0;
   color: #212121;
   font-family: "Iowan Old Style", Baskerville, "Times New Roman", serif;
-  font-size: clamp(17px, 1.55vw, 22px);
+  font-size: clamp(14px, 1.25vw, 18px);
   font-weight: 500;
   letter-spacing: 0.008em;
   line-height: 1.65;
