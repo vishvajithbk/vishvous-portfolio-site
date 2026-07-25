@@ -17,23 +17,6 @@ export function ThoughtTimeline() {
             className={styles.card}
             aria-label={`Thought posted ${thought.postedLabel}`}
           >
-            <div className={styles.profile}>
-              <span
-                className={styles.avatar}
-                aria-label={`${thought.author} profile`}
-                role="img"
-              >
-                {thought.initials}
-              </span>
-
-              <div className={styles.identity}>
-                <span className={styles.author}>{thought.author}</span>
-                <time className={styles.date} dateTime={thought.postedAt}>
-                  {thought.postedLabel}
-                </time>
-              </div>
-            </div>
-
             <p className={styles.thought}>{thought.content}</p>
           </article>
         </li>
