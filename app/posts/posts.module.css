@@ -235,6 +235,17 @@
   animation: thought-enter var(--duration-enter) var(--ease-emphasized) both;
 }
 
+.timelineItem:first-child::before {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 50%;
+  left: calc(0px - var(--space-8));
+  width: 1px;
+  background: var(--color-canvas);
+  content: "";
+}
+
 .timelineItem:nth-child(2) {
   animation-delay: 90ms;
 }
@@ -387,6 +398,10 @@
 
   .timelineItem {
     margin-left: 10px;
+  }
+
+  .timelineItem:first-child::before {
+    left: -10px;
   }
 
   .marker {
