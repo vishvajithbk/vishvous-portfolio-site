@@ -222,7 +222,7 @@
   position: absolute;
   top: var(--space-7);
   bottom: var(--space-7);
-  left: calc(0px - var(--space-8));
+  left: 0;
   width: 1px;
   background: var(--color-timeline);
   content: "";
@@ -231,6 +231,7 @@
 .timelineItem {
   position: relative;
   display: block;
+  margin-left: var(--space-8);
   animation: thought-enter var(--duration-enter) var(--ease-emphasized) both;
 }
 
@@ -381,7 +382,11 @@
   }
 
   .timeline::before {
-    left: -10px;
+    left: 0;
+  }
+
+  .timelineItem {
+    margin-left: 10px;
   }
 
   .marker {
