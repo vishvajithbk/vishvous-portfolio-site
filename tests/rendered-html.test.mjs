@@ -58,6 +58,16 @@ test("serves every dedicated content route with the shared shell", async () => {
   }
 });
 
+test("renders thirty thought cards on Posts", async () => {
+  const response = await render("/posts");
+  assert.equal(response.status, 200);
+
+  const html = await response.text();
+  assert.equal((html.match(/aria-label="Thought posted /g) ?? []).length, 30);
+  assert.match(html, /Believe you can and you(?:&#x27;|')re halfway there\./i);
+  assert.match(html, /Stars can(?:&#x27;|')t shine without darkness\./i);
+});
+
 test("renders the initial three-column People feed with names only", async () => {
   const response = await render("/people");
   assert.equal(response.status, 200);
