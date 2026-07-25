@@ -25,7 +25,7 @@ function DummyAvatar({ compact = false }: { compact?: boolean }) {
   );
 }
 
-export function PostsProfile({ thoughtCount }: { thoughtCount: number }) {
+export function PostsProfile() {
   useEffect(() => {
     const root = document.documentElement;
     let previousScrollY = window.scrollY;
@@ -79,23 +79,12 @@ export function PostsProfile({ thoughtCount }: { thoughtCount: number }) {
         <span className={styles.takeoverJoined}>{profile.joined}</span>
       </div>
 
-      <section
-        className={styles.profileHeader}
-        aria-labelledby="posts-profile-name"
-        aria-label="Posts profile"
-      >
-        <header className={styles.profileTopline}>
-          <div>
-            <h2 id="posts-profile-name">{profile.name}</h2>
-            <p>{thoughtCount} thoughts</p>
-          </div>
-        </header>
-
+      <section className={styles.profileHeader} aria-label="Posts profile">
         <div className={styles.profileBanner} aria-hidden="true" />
 
         <div className={styles.profileDetails}>
           <DummyAvatar />
-          <p className={styles.profileName}>{profile.name}</p>
+          <h2 className={styles.profileName}>{profile.name}</h2>
           <p className={styles.profileHandle}>{profile.handle}</p>
           <p className={styles.profileBio}>{profile.bio}</p>
           <p className={styles.profileJoined}>

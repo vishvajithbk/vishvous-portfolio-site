@@ -68,6 +68,7 @@ test("renders thirty thought cards on Posts", async () => {
   assert.match(html, /data-profile-takeover/i);
   assert.match(html, /chasing questions that bend reality/i);
   assert.match(html, /Joined January 2026/i);
+  assert.doesNotMatch(html, />30 thoughts</i);
   assert.ok(
     html.indexOf('aria-label="Posts profile"') <
       html.indexOf('aria-label="Thoughts in chronological order"'),

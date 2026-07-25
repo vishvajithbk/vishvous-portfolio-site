@@ -6,41 +6,18 @@
 .profileHeader {
   width: var(--content-width);
   max-width: var(--content-max-width);
-  margin: -1px auto clamp(64px, 7vw, 88px);
+  margin: -1px auto 30px;
   overflow: hidden;
   border: 1px solid var(--color-rule);
+  border-bottom: 0;
   background: var(--color-canvas);
 }
 
-.profileTopline {
-  display: flex;
-  min-height: 66px;
-  align-items: center;
-  padding: 12px var(--space-6);
-  border-bottom: 1px solid var(--color-rule);
-}
-
-.profileTopline h2,
-.profileTopline p,
 .profileName,
 .profileHandle,
 .profileBio,
 .profileJoined {
   margin: 0;
-}
-
-.profileTopline h2 {
-  font-size: clamp(20px, 2vw, 26px);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: var(--tracking-tight);
-  line-height: 1.05;
-}
-
-.profileTopline p {
-  margin-top: 5px;
-  color: var(--color-text-muted);
-  font-size: var(--font-size-caption);
-  line-height: 1;
 }
 
 .profileBanner {
@@ -365,12 +342,7 @@
 
   .profileHeader {
     width: 100%;
-    margin-bottom: 52px;
-  }
-
-  .profileTopline {
-    min-height: 58px;
-    padding-inline: var(--space-5);
+    margin-bottom: 22px;
   }
 
   .profileBanner {
