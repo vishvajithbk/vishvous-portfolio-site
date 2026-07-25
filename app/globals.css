@@ -172,6 +172,15 @@ button:disabled {
   padding-top: 18px;
   background: var(--color-canvas);
   isolation: isolate;
+  transition: transform var(--duration-standard) var(--ease-emphasized);
+}
+
+html[data-posts-nav="hidden"] .site-header {
+  transform: translateY(calc(-100% - 1px));
+}
+
+.site-header:focus-within {
+  transform: translateY(0);
 }
 
 .site-header__bar {
@@ -314,6 +323,7 @@ button:disabled {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .site-header,
   .navigation a,
   .appearance-dot {
     transition: none;

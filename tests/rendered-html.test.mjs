@@ -64,6 +64,15 @@ test("renders thirty thought cards on Posts", async () => {
 
   const html = await response.text();
   assert.equal((html.match(/aria-label="Thought posted /g) ?? []).length, 30);
+  assert.match(html, /aria-label="Posts profile"/i);
+  assert.match(html, /data-profile-takeover/i);
+  assert.match(html, /chasing questions that bend reality/i);
+  assert.match(html, /Joined January 2026/i);
+  assert.ok(
+    html.indexOf('aria-label="Posts profile"') <
+      html.indexOf('aria-label="Thoughts in chronological order"'),
+    "the Posts profile should appear before the thought cards",
+  );
   assert.match(html, /Believe you can and you(?:&#x27;|')re halfway there\./i);
   assert.match(html, /Stars can(?:&#x27;|')t shine without darkness\./i);
 });
