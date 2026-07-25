@@ -242,8 +242,6 @@
 .timelineItem {
   position: relative;
   display: block;
-  width: fit-content;
-  max-width: calc(100% - var(--space-8));
   margin-left: var(--space-8);
   animation: thought-enter var(--duration-enter) var(--ease-emphasized) both;
 }
@@ -296,9 +294,6 @@
 
 .card {
   position: relative;
-  display: inline-block;
-  width: fit-content;
-  max-width: 100%;
   overflow: hidden;
   padding: 14px var(--space-4);
   border: 0;
@@ -310,7 +305,7 @@
 .thought {
   max-width: 650px;
   margin: 0;
-  font-size: var(--font-size-content);
+  font-size: var(--font-size-content-compact);
   font-weight: var(--font-weight-regular);
   letter-spacing: var(--tracking-content);
   line-height: var(--line-height-content);
@@ -373,7 +368,6 @@
   }
 
   .timelineItem {
-    max-width: calc(100% - 10px);
     margin-left: 10px;
   }
 
@@ -393,7 +387,7 @@
   }
 
   .thought {
-    font-size: var(--font-size-content-compact);
+    font-size: 15px;
   }
 }
 
