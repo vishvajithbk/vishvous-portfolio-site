@@ -144,11 +144,11 @@
   z-index: -1;
   background: linear-gradient(
     90deg,
-    rgba(24, 20, 16, 0.18),
-    rgba(24, 20, 16, 0.5) 30%,
-    rgba(24, 20, 16, 0.56) 50%,
-    rgba(24, 20, 16, 0.5) 70%,
-    rgba(24, 20, 16, 0.18)
+    rgba(232, 220, 194, 0.1),
+    rgba(232, 220, 194, 0.66) 30%,
+    rgba(232, 220, 194, 0.76) 50%,
+    rgba(232, 220, 194, 0.66) 70%,
+    rgba(232, 220, 194, 0.1)
   );
 }
 
@@ -157,13 +157,14 @@
   z-index: 1;
   max-width: 1200px;
   margin: 0;
-  color: #ffffff;
-  font-size: clamp(20px, 2vw, 30px);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-content);
-  line-height: 1.5;
+  color: #212121;
+  font-family: "Iowan Old Style", Baskerville, "Times New Roman", serif;
+  font-size: clamp(17px, 1.55vw, 22px);
+  font-weight: 500;
+  letter-spacing: 0.008em;
+  line-height: 1.65;
   text-align: center;
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.42);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.24);
   text-wrap: balance;
 }
 
@@ -217,8 +218,8 @@
   }
 
   .influencePassage {
-    font-size: clamp(18px, 5vw, 22px);
-    line-height: 1.45;
+    font-size: clamp(16px, 4.5vw, 18px);
+    line-height: 1.55;
   }
 
   .influencePassage span {
