@@ -164,9 +164,20 @@
   border-bottom: 1px solid var(--color-rule);
   background: var(--color-canvas);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  isolation: isolate;
   pointer-events: none;
   transform: translate(-50%, calc(-100% - 1px));
   transition: transform var(--duration-standard) var(--ease-emphasized);
+}
+
+.profileTakeover::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0 auto 0 50%;
+  width: 100vw;
+  background: var(--color-canvas);
+  content: "";
+  transform: translateX(-50%);
 }
 
 :global(html[data-posts-nav="hidden"]) .profileTakeover {
