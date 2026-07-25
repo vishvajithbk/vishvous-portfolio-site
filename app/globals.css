@@ -78,6 +78,7 @@
     0 0 0 7px var(--color-timeline);
 
   /* Shared layout */
+  --site-header-height: 62.5px;
   --content-width: 52.5vw;
   --content-max-width: 826px;
   color-scheme: light;
@@ -117,6 +118,7 @@ html {
 
 body {
   margin: 0;
+  padding-top: var(--site-header-height);
   background: inherit;
   color: inherit;
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
@@ -161,8 +163,15 @@ button:disabled {
 }
 
 .site-header {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+  left: 0;
   width: 100%;
   padding-top: 18px;
+  background: var(--color-canvas);
+  isolation: isolate;
 }
 
 .site-header__bar {
