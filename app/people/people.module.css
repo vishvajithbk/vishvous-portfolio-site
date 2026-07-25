@@ -1,18 +1,19 @@
 .peoplePage {
   min-height: calc(100vh - 61px);
-  padding: clamp(54px, 7vw, 92px) clamp(24px, 7vw, 80px) 160px;
+  padding: 0 0 160px;
 }
 
 .feed {
-  width: min(100%, 960px);
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
 }
 
 .gallery {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(16px, 1.8vw, 24px);
-  width: 100%;
+  width: min(calc(100% - 48px), 960px);
+  margin: clamp(72px, 8vw, 112px) auto 0;
 }
 
 .galleryColumn {
@@ -115,30 +116,67 @@
 }
 
 .influenceSection {
+  position: relative;
   display: grid;
+  width: 100%;
+  min-height: clamp(360px, 33.333vw, 520px);
   margin: 0;
-  padding: clamp(8px, 1.5vw, 20px) clamp(24px, 8vw, 120px)
-    clamp(72px, 8vw, 112px);
+  padding: clamp(52px, 8vw, 112px);
+  overflow: hidden;
+  background: #403a31;
+  isolation: isolate;
   place-items: center;
 }
 
+.influenceSection::before,
+.influenceSection::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+.influenceSection::before {
+  z-index: -2;
+  background: url("/people-influence-hero.jpg") center / cover no-repeat;
+}
+
+.influenceSection::after {
+  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    rgba(24, 20, 16, 0.18),
+    rgba(24, 20, 16, 0.5) 30%,
+    rgba(24, 20, 16, 0.56) 50%,
+    rgba(24, 20, 16, 0.5) 70%,
+    rgba(24, 20, 16, 0.18)
+  );
+}
+
 .influencePassage {
-  max-width: 840px;
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
   margin: 0;
-  color: var(--color-text);
+  color: #ffffff;
   font-size: clamp(20px, 2vw, 30px);
-  font-weight: var(--font-weight-regular);
+  font-weight: var(--font-weight-medium);
   letter-spacing: var(--tracking-content);
-  line-height: 1.45;
+  line-height: 1.5;
   text-align: center;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.42);
   text-wrap: balance;
+}
+
+.influencePassage span {
+  display: block;
+  white-space: nowrap;
 }
 
 .loadMoreSentinel {
   display: grid;
-  width: 100%;
+  width: min(calc(100% - 48px), 960px);
   min-height: 1px;
-  margin-top: clamp(48px, 7vw, 80px);
+  margin: clamp(48px, 7vw, 80px) auto 0;
   place-items: center;
 }
 
@@ -155,7 +193,12 @@
 
 @media (max-width: 640px) {
   .peoplePage {
-    padding: 44px 20px 96px;
+    padding: 0 0 96px;
+  }
+
+  .gallery {
+    width: calc(100% - 40px);
+    margin-top: 56px;
   }
 
   .gallery,
@@ -169,7 +212,25 @@
   }
 
   .influenceSection {
-    padding: 0 12px 56px;
+    min-height: 360px;
+    padding: 48px 20px;
+  }
+
+  .influencePassage {
+    font-size: clamp(18px, 5vw, 22px);
+    line-height: 1.45;
+  }
+
+  .influencePassage span {
+    white-space: normal;
+  }
+
+  .influencePassage span + span {
+    margin-top: 8px;
+  }
+
+  .loadMoreSentinel {
+    width: calc(100% - 40px);
   }
 }
 

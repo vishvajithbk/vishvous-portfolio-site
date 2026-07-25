@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Person } from "./people";
-import { people, peopleInfluencePassage } from "./people";
+import { people, peopleInfluenceLines } from "./people";
 import styles from "./people.module.css";
 
 const COLUMN_COUNT = 3;
@@ -134,7 +134,13 @@ export function PeopleGallery() {
       aria-label="People who shaped Vishva's thinking"
     >
       <div className={styles.influenceSection}>
-        <p className={styles.influencePassage}>{peopleInfluencePassage}</p>
+        <p className={styles.influencePassage}>
+          {peopleInfluenceLines.map((line) => (
+            <span data-influence-line key={line}>
+              {line}
+            </span>
+          ))}
+        </p>
       </div>
 
       <MasonryGallery entries={visiblePeople} label="People gallery" />

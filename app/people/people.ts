@@ -34,5 +34,8 @@ const temporaryPeople: Person[] = Array.from({ length: 33 }, (_, index) => {
 
 export const people: Person[] = [...featuredPeople, ...temporaryPeople];
 
-export const peopleInfluencePassage =
-  "The people gathered here have each shaped a part of the way I see the world. Through their ideas, work, courage, and contradictions, they have challenged my assumptions and expanded my sense of what is possible. I may not agree with every choice they have made, but their influence has stayed with me—quietly informing how I think, what I value, and the person I am still becoming.";
+export const peopleInfluenceLines = [
+  "These are the people who shaped how I see the world.",
+  "They challenged my assumptions and widened my sense of what is possible.",
+  "Their influence lives in how I think, what I value, and who I am becoming.",
+] as const;
