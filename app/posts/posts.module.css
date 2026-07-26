@@ -366,6 +366,7 @@
 
 .copyIcon {
   --action-icon: url("/icons/posts/copy.svg");
+  opacity: 0.72;
 }
 
 .voteIcon {
