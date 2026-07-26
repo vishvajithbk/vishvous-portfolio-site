@@ -8,9 +8,18 @@ export const siteConfig = {
     { label: "Posts", href: "/posts" },
     { label: "People", href: "/people" },
     { label: "Signals", href: "/signals" },
-    { label: "Research", href: "/research" },
+    { label: "Work", href: "/work" },
   ],
 } as const;
+
+export type ExternalProfile = {
+  label: "X" | "LinkedIn";
+  href: `https://${string}`;
+};
+
+// Add verified public profile URLs here. Unconfigured profiles stay hidden so
+// the public page never ships guessed or placeholder destinations.
+export const externalProfiles: ExternalProfile[] = [];
 
 export const appearanceStorageKey = "vishvous-appearance";
 const appearanceChangeEvent = "vishvous:appearance-change";
