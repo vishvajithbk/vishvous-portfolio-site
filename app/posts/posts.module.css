@@ -295,9 +295,9 @@
 .card {
   position: relative;
   overflow: hidden;
-  padding: 14px;
+  padding: 10px 14px;
   border: 0;
-  border-radius: 16px;
+  border-radius: 20px;
   background: var(--color-surface-card);
   box-shadow: var(--shadow-surface);
 }
@@ -464,11 +464,6 @@
     width: 11px;
     height: 11px;
     left: -15.5px;
-  }
-
-  .card {
-    padding: 14px;
-    border-radius: 16px;
   }
 
 }
