@@ -311,13 +311,20 @@
   line-height: var(--line-height-content);
 }
 
+.thoughtTopline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-4);
+}
+
 .thoughtActions {
   display: flex;
   min-height: 32px;
   align-items: center;
   gap: 8px;
   margin-top: 12px;
-  color: var(--color-text-muted);
+  color: var(--color-post-action);
 }
 
 .actionButton {
@@ -377,7 +384,8 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  margin-left: 2px;
+  padding-top: 2px;
+  color: var(--color-post-action);
   font-size: var(--font-size-caption);
   line-height: 1;
   white-space: nowrap;
@@ -461,6 +469,10 @@
   .card {
     padding: 14px;
     border-radius: 16px;
+  }
+
+  .thoughtTopline {
+    gap: 10px;
   }
 }
 

@@ -64,6 +64,7 @@
   --color-text: #151515;
   --color-header-interactive: #4a4a46;
   --color-text-muted: #74746f;
+  --color-post-action: #4a4a46;
   --color-rule: #dededb;
   --color-surface-card: #f3f3f3;
   --color-surface-muted: #efefeb;
@@ -90,6 +91,7 @@
   --color-text: #f2f2ef;
   --color-header-interactive: #b8b8b2;
   --color-text-muted: #969690;
+  --color-post-action: #b8b8b2;
   --color-rule: #343432;
   --color-surface-card: #2a2a2a;
   --color-surface-muted: #171717;

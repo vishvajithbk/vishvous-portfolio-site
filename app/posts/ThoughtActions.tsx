@@ -7,15 +7,9 @@ type Vote = "like" | "dislike" | null;
 
 type ThoughtActionsProps = {
   content: string;
-  postedAt: string;
-  postedLabel: string;
 };
 
-export function ThoughtActions({
-  content,
-  postedAt,
-  postedLabel,
-}: ThoughtActionsProps) {
+export function ThoughtActions({ content }: ThoughtActionsProps) {
   const [vote, setVote] = useState<Vote>(null);
   const [copied, setCopied] = useState(false);
 
@@ -67,10 +61,6 @@ export function ThoughtActions({
         />
       </button>
 
-      <span className={styles.thoughtDate}>
-        <span className={`${styles.actionIcon} ${styles.globeIcon}`} />
-        <time dateTime={postedAt}>{postedLabel}</time>
-      </span>
     </footer>
   );
 }

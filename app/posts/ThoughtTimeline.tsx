@@ -18,12 +18,14 @@ export function ThoughtTimeline() {
             className={styles.card}
             aria-label={`Thought posted ${thought.postedLabel}`}
           >
-            <p className={styles.thought}>{thought.content}</p>
-            <ThoughtActions
-              content={thought.content}
-              postedAt={thought.postedAt}
-              postedLabel={thought.postedLabel}
-            />
+            <div className={styles.thoughtTopline}>
+              <p className={styles.thought}>{thought.content}</p>
+              <span className={styles.thoughtDate}>
+                <span className={`${styles.actionIcon} ${styles.globeIcon}`} />
+                <time dateTime={thought.postedAt}>{thought.postedLabel}</time>
+              </span>
+            </div>
+            <ThoughtActions content={thought.content} />
           </article>
         </li>
       ))}
