@@ -381,7 +381,7 @@
 
 .thoughtDate {
   display: inline-flex;
-  align-self: flex-end;
+  align-self: flex-start;
   align-items: center;
   gap: 7px;
   padding-top: 2px;
