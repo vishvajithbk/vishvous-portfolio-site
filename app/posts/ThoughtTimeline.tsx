@@ -19,11 +19,11 @@ export function ThoughtTimeline() {
             aria-label={`Thought posted ${thought.postedLabel}`}
           >
             <div className={styles.thoughtTopline}>
-              <p className={styles.thought}>{thought.content}</p>
               <span className={styles.thoughtDate}>
                 <span className={`${styles.actionIcon} ${styles.globeIcon}`} />
                 <time dateTime={thought.postedAt}>{thought.postedLabel}</time>
               </span>
+              <p className={styles.thought}>{thought.content}</p>
             </div>
             <ThoughtActions content={thought.content} />
           </article>

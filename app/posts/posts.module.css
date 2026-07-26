@@ -312,10 +312,9 @@
 }
 
 .thoughtTopline {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  gap: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .thoughtActions {
@@ -382,6 +381,7 @@
 
 .thoughtDate {
   display: inline-flex;
+  align-self: flex-end;
   align-items: center;
   gap: 7px;
   padding-top: 2px;
@@ -471,9 +471,6 @@
     border-radius: 16px;
   }
 
-  .thoughtTopline {
-    gap: 10px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
