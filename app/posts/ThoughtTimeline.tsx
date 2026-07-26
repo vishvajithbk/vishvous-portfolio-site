@@ -1,4 +1,5 @@
 import { thoughts } from "./thoughts";
+import { ThoughtActions } from "./ThoughtActions";
 import styles from "./posts.module.css";
 
 export function ThoughtTimeline() {
@@ -18,6 +19,11 @@ export function ThoughtTimeline() {
             aria-label={`Thought posted ${thought.postedLabel}`}
           >
             <p className={styles.thought}>{thought.content}</p>
+            <ThoughtActions
+              content={thought.content}
+              postedAt={thought.postedAt}
+              postedLabel={thought.postedLabel}
+            />
           </article>
         </li>
       ))}

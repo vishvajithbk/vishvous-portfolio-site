@@ -64,6 +64,9 @@ test("renders thirty thought cards on Posts", async () => {
 
   const html = await response.text();
   assert.equal((html.match(/aria-label="Thought posted /g) ?? []).length, 30);
+  assert.equal((html.match(/aria-label="Copy thought"/g) ?? []).length, 30);
+  assert.equal((html.match(/aria-label="Like thought"/g) ?? []).length, 30);
+  assert.equal((html.match(/aria-label="Dislike thought"/g) ?? []).length, 30);
   assert.match(html, /aria-label="Posts profile"/i);
   assert.match(html, /data-profile-takeover/i);
   assert.match(html, /chasing questions that bend reality/i);
