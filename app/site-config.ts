@@ -8,7 +8,7 @@ export const siteConfig = {
     { label: "Posts", href: "/posts" },
     { label: "People", href: "/people" },
     { label: "Signals", href: "/signals" },
-    { label: "Research", href: "/research" },
+    { label: "Work", href: "/research" },
   ],
 } as const;
 
