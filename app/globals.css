@@ -43,7 +43,7 @@
 
   /* Motion */
   --duration-fast: 180ms;
-  --duration-standard: 240ms;
+  --duration-standard: 600ms;
   --duration-enter: 620ms;
   --ease-gentle: ease;
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
@@ -304,6 +304,14 @@ html[data-posts-nav="hidden"] .site-header {
   height: 0.5px;
   margin: 0 auto;
   background: var(--color-rule);
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+  will-change: opacity;
+}
+
+.header-rule[data-over-content="true"] {
+  opacity: 0;
 }
 
 .page {
@@ -327,7 +335,8 @@ html[data-posts-nav="hidden"] .site-header {
 @media (prefers-reduced-motion: reduce) {
   .site-header,
   .navigation a,
-  .appearance-dot {
+  .appearance-dot,
+  .header-rule {
     transition: none;
   }
 }

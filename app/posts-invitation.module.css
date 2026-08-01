@@ -1,0 +1,167 @@
+.postsInvitation {
+  --invitation-background: #ffffff;
+  --invitation-text: #413e3e;
+  --invitation-muted: rgba(65, 62, 62, 0.6);
+
+  display: grid;
+  height: 150px;
+  min-height: 150px;
+  margin-top: 40px;
+  padding: 0 36px;
+  background: var(--invitation-background);
+  color: var(--invitation-text);
+  place-items: center;
+}
+
+:global([data-appearance="dark"]) .postsInvitation {
+  --invitation-background: #000000;
+  --invitation-text: #f8f8f8;
+  --invitation-muted: rgba(248, 248, 248, 0.6);
+}
+
+.invitationInner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 64px;
+  width: min(100%, 1024px);
+  align-items: center;
+}
+
+.invitationHeading {
+  position: relative;
+  display: inline-block;
+  width: max-content;
+  max-width: 100%;
+  padding-bottom: 3px;
+  color: var(--invitation-text);
+  font-family: ABCDiatype, Arial, Helvetica, sans-serif;
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 39px;
+  white-space: nowrap;
+}
+
+.invitationHeading::after {
+  position: absolute;
+  right: 0;
+  bottom: -2px;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  content: "";
+  opacity: 0.72;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 240ms var(--ease-standard);
+}
+
+.invitationHeading:hover::after,
+.invitationHeading:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.invitationHeading span:last-child {
+  opacity: 0.6;
+}
+
+.subscribeForm {
+  width: 320px;
+}
+
+.subscribeRow {
+  display: flex;
+  height: 56px;
+  align-items: center;
+  gap: 24px;
+  border-bottom: 1px solid var(--invitation-text);
+}
+
+.subscribeRow input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--invitation-text);
+  font-family: ABCDiatype, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.subscribeRow input::placeholder {
+  color: var(--invitation-muted);
+  opacity: 1;
+}
+
+.subscribeRow button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--invitation-text);
+  cursor: pointer;
+  font-family: ABCDiatype, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.subscribeRow input:focus-visible,
+.subscribeRow button:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.subscribeForm > p {
+  margin: 16px 0 0;
+  color: var(--invitation-muted);
+  font-family: ABCDiatype, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 19.2px;
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
+  .postsInvitation {
+    height: auto;
+    min-height: 260px;
+    margin-top: 32px;
+    padding: 32px 20px;
+  }
+
+  .invitationInner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    width: min(100%, 640px);
+  }
+
+  .invitationHeading {
+    font-size: 26px;
+    justify-self: center;
+    line-height: 34px;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .subscribeForm {
+    width: min(100%, 320px);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .postsInvitation {
+    min-height: 240px;
+    padding: 28px 20px;
+  }
+
+  .invitationInner {
+    gap: 28px;
+  }
+}

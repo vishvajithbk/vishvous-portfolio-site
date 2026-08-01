@@ -1,3 +1,5 @@
-export default function Research() {
-  return <main className="page" aria-label="Research page" />;
+import { WorkShowcase } from "./WorkShowcase";
+
+export default function Work() {
+  return <WorkShowcase />;
 }

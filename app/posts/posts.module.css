@@ -3,33 +3,63 @@
   padding: 0 var(--space-6) 120px;
 }
 
+.postsInvitationFooter {
+  width: calc(100% + var(--space-6) + var(--space-6));
+  margin: 120px calc(0px - var(--space-6)) -120px;
+}
+
 .profileHeader {
-  width: var(--content-width);
-  max-width: var(--content-max-width);
-  margin: -1px auto 30px;
-  overflow: hidden;
-  border: 1px solid var(--color-rule);
-  border-bottom: 0;
-  background: var(--color-canvas);
+  width: calc(100% + var(--space-6) + var(--space-6));
+  max-width: none;
+  margin: -1px calc(0px - var(--space-6)) 36px;
 }
 
 .profileName,
 .profileHandle,
 .profileBio,
-.profileJoined {
+.profileContext,
+.profileFacts,
+.profileFact dt,
+.profileFact dd {
   margin: 0;
 }
 
 .profileBanner {
-  height: clamp(150px, 16vw, 220px);
-  background:
-    radial-gradient(circle at 78% 28%, rgba(255, 255, 255, 0.1), transparent 25%),
-    linear-gradient(135deg, var(--color-surface-card), var(--color-surface-muted));
+  position: relative;
+  width: 100%;
+  height: clamp(124px, 12.33vw, 194px);
+  overflow: hidden;
+  background: var(--color-canvas);
 }
 
-.profileDetails {
+.profileBanner::before {
+  position: absolute;
+  inset: 0;
+  background: url("/posts-orbit-header.png") center 55% / cover no-repeat;
+  content: "";
+  transform: rotate(180deg);
+}
+
+.profileBanner::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.14),
+    transparent 44%,
+    rgba(0, 0, 0, 0.2)
+  );
+  content: "";
+}
+
+.profileCard {
   position: relative;
-  padding: 72px var(--space-8) var(--space-8);
+  width: min(472px, calc(100% - 48px));
+  margin: 16px auto 0;
+  padding: 58px var(--space-7) var(--space-6);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 22px;
+  background: var(--color-canvas);
 }
 
 .avatarSilhouette {
@@ -37,115 +67,220 @@
   display: block;
   flex: 0 0 auto;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
   border-radius: var(--radius-round);
-  background: var(--color-surface-card);
+  background-color: var(--color-surface-card);
+  background-image: url("/vishvajith-profile-square.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .profileAvatar {
   position: absolute;
-  top: -58px;
-  left: var(--space-8);
-  width: 116px;
-  height: 116px;
+  top: -69px;
+  left: 50%;
+  width: 104px;
+  height: 104px;
   border: 5px solid var(--color-canvas);
   box-shadow: 0 0 0 1px var(--color-border-subtle);
-}
-
-.avatarHead,
-.avatarBody {
-  position: absolute;
-  left: 50%;
-  display: block;
-  background: var(--color-text);
-  opacity: 0.14;
+  cursor: zoom-in;
   transform: translateX(-50%);
+  transition: transform var(--duration-standard) var(--ease-emphasized);
 }
 
-.avatarHead {
-  top: 22%;
-  width: 31%;
-  aspect-ratio: 1;
+.profileAvatar:focus-visible {
   border-radius: var(--radius-round);
 }
 
-.avatarBody {
-  bottom: -10%;
-  width: 76%;
-  height: 52%;
-  border-radius: 50% 50% 0 0;
+.profilePhotoDialog {
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: clamp(20px, 4vw, 48px);
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  opacity: 0;
+  transition: opacity var(--duration-standard) var(--ease-standard);
+}
+
+.profilePhotoDialog::backdrop {
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0);
+  transition:
+    background var(--duration-standard) var(--ease-standard),
+    backdrop-filter var(--duration-standard) var(--ease-standard);
+}
+
+.profilePhotoDialog[data-open="true"] {
+  opacity: 1;
+}
+
+.profilePhotoDialog[data-open="true"]::backdrop {
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(12px);
+}
+
+.profilePhotoFrame {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  opacity: 0;
+  transform: translateY(18px) scale(0.965);
+  transition:
+    opacity var(--duration-standard) var(--ease-standard),
+    transform var(--duration-standard) var(--ease-emphasized);
+}
+
+.profilePhotoDialog[data-open="true"] .profilePhotoFrame {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.profilePhotoStage {
+  position: relative;
+  display: grid;
+  width: fit-content;
+  max-width: 90vw;
+  place-items: center;
+}
+
+.profilePhotoOriginal {
+  display: block;
+  width: min(90vw, 440px);
+  max-width: 440px;
+  height: auto;
+  max-height: calc(100dvh - 96px);
+  border-radius: 18px;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.44);
+  object-fit: contain;
+  user-select: none;
+}
+
+.profilePhotoClose {
+  position: absolute;
+  top: -46px;
+  left: calc(100% + 8px);
+  display: grid;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-round);
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  place-items: center;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.profilePhotoClose:focus-visible {
+  border-radius: var(--radius-round);
+}
+
+.profilePhotoCloseIcon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: url("/close-circle-outline.svg") center / contain no-repeat;
+  filter: invert(1);
+  opacity: 0.8;
+  transition: opacity var(--duration-fast) var(--ease-standard);
 }
 
 .profileName {
-  font-size: clamp(22px, 2.2vw, 30px);
+  font-size: clamp(21px, 2vw, 27px);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--tracking-tight);
   line-height: 1.1;
 }
 
+.profileIdentity {
+  text-align: center;
+}
+
 .profileHandle {
-  margin-top: 6px;
+  margin-top: 5px;
   color: var(--color-text-muted);
-  font-size: var(--font-size-content-compact);
+  font-size: var(--font-size-body);
   line-height: 1.2;
+}
+
+.profileContext {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 7px;
+  margin: 0 auto var(--space-3);
+  color: var(--color-post-action);
+  font-size: 10px;
+  font-weight: var(--font-weight-interactive);
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.contextMark {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-round);
 }
 
 .profileBio {
-  margin-top: var(--space-7);
-  font-size: var(--font-size-content);
-  letter-spacing: var(--tracking-content);
-  line-height: 1.4;
-}
-
-.profileBio::before,
-.profileBio::after {
-  content: "•";
-}
-
-.profileBio::before {
-  margin-right: 7px;
-}
-
-.profileBio::after {
-  margin-left: 7px;
-}
-
-.profileJoined {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: var(--space-6);
+  margin-top: var(--space-4);
   color: var(--color-text-muted);
   font-size: var(--font-size-content-compact);
-  line-height: 1.2;
+  letter-spacing: var(--tracking-content);
+  line-height: 1.35;
+  text-align: center;
 }
 
-.calendarIcon {
-  position: relative;
-  display: inline-block;
-  width: 17px;
-  height: 16px;
-  border: 1.5px solid currentColor;
-  border-radius: 3px;
+.profileFacts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-border-subtle);
 }
 
-.calendarIcon::before {
-  position: absolute;
-  top: 4px;
-  right: 0;
-  left: 0;
-  border-top: 1.5px solid currentColor;
-  content: "";
+.profileFact {
+  min-width: 0;
+  padding: 0 var(--space-3);
+  text-align: center;
 }
 
-.calendarIcon::after {
-  position: absolute;
-  top: -3px;
-  left: 4px;
-  width: 1.5px;
-  height: 5px;
-  background: currentColor;
-  box-shadow: 6px 0 currentColor;
-  content: "";
+.profileFact + .profileFact {
+  border-left: 1px solid var(--color-border-subtle);
+}
+
+.profileFact dt {
+  color: var(--color-text-muted);
+  font-size: 10px;
+  font-weight: var(--font-weight-meta);
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.profileFact dd {
+  overflow: hidden;
+  margin-top: 7px;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-meta);
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .profileTakeover {
@@ -394,6 +529,18 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .profileAvatar:hover {
+    transform: translateX(-50%) scale(1.035);
+  }
+
+  .profilePhotoClose:hover {
+    transform: scale(1.05);
+  }
+
+  .profilePhotoClose:hover .profilePhotoCloseIcon {
+    opacity: 1;
+  }
+
   .timelineItem:hover .marker {
     transform: translateY(-50%) scale(1.22);
     box-shadow: var(--shadow-marker-hover);
@@ -410,34 +557,60 @@
     padding: 0 var(--space-4) 80px;
   }
 
+  .postsInvitationFooter {
+    width: calc(100% + var(--space-4) + var(--space-4));
+    margin: 80px calc(0px - var(--space-4)) -80px;
+  }
+
   .profileHeader {
-    width: 100%;
-    margin-bottom: 22px;
+    width: calc(100% + var(--space-4) + var(--space-4));
+    margin: -1px calc(0px - var(--space-4)) 28px;
   }
 
   .profileBanner {
-    height: 132px;
+    min-height: 124px;
   }
 
-  .profileDetails {
-    padding: 60px var(--space-5) var(--space-6);
+  .profileCard {
+    width: calc(100% - 24px);
+    margin-top: 14px;
+    padding: 52px var(--space-4) var(--space-5);
   }
 
   .profileAvatar {
-    top: -48px;
-    left: var(--space-5);
-    width: 96px;
-    height: 96px;
+    top: -60px;
+    left: 50%;
+    width: 90px;
+    height: 90px;
     border-width: 4px;
   }
 
   .profileBio {
-    font-size: var(--font-size-content-compact);
+    font-size: var(--font-size-body);
+  }
+
+  .profileFacts {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+  }
+
+  .profileFact {
+    padding-inline: var(--space-2);
+  }
+
+  .profileFact dd {
+    font-size: var(--font-size-caption);
   }
 
   .profileTakeover {
     width: 100%;
     padding-inline: var(--space-4);
+  }
+
+  .profilePhotoClose {
+    top: 12px;
+    right: 12px;
+    left: auto;
   }
 
   .takeoverJoined {
@@ -468,6 +641,16 @@
     left: -15.5px;
   }
 
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profileAvatar,
+  .profilePhotoDialog,
+  .profilePhotoDialog::backdrop,
+  .profilePhotoFrame,
+  .profilePhotoClose {
+    transition: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

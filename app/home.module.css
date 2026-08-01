@@ -1,0 +1,430 @@
+.homeIntroduction {
+  --introduction-button-background: #ffffff;
+  --introduction-button-hover-background: #d8d8d8;
+  --introduction-button-color: #151515;
+
+  overflow: hidden;
+  background: var(--color-canvas);
+}
+
+:global([data-appearance="dark"]) .homeIntroduction {
+  --introduction-button-background: #ffffff;
+  --introduction-button-hover-background: #d8d8d8;
+  --introduction-button-color: #151515;
+}
+
+.hero {
+  position: relative;
+  width: min(calc(100% - 72px), 1400px);
+  height: auto;
+  min-height: 620px;
+  aspect-ratio: 1717 / 916;
+  margin: var(--site-header-height) auto 0;
+  overflow: hidden;
+  border-radius: var(--radius-gallery);
+  background: #050505;
+  isolation: isolate;
+}
+
+.hero::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.08);
+  content: "";
+  pointer-events: none;
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.introductionCard {
+  position: absolute;
+  z-index: 2;
+  top: 32px;
+  left: 32px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.28fr) minmax(190px, 0.72fr);
+  gap: 16px;
+  align-items: stretch;
+  width: min(660px, calc(100% - 64px));
+  height: 260px;
+  padding: 20px 16px 18px 28px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.3);
+  color: #0b1222;
+  opacity: 0.84;
+  transform: none;
+}
+
+.introductionCopy {
+  align-self: center;
+  min-width: 0;
+}
+
+.introductionCopy h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(40px, 3.7vw, 52px);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.94;
+}
+
+.introductionCopy h1 span {
+  display: block;
+  white-space: nowrap;
+}
+
+.introductionCopy > p:last-child {
+  max-width: 42ch;
+  margin: 14px 0 0;
+  color: #596477;
+  font-size: clamp(13px, 1vw, 15px);
+  letter-spacing: -0.025em;
+  line-height: 1.42;
+}
+
+.portraitFrame {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.portraitFrame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.introductionActions {
+  position: absolute;
+  z-index: 2;
+  right: 32px;
+  bottom: 32px;
+  display: flex;
+  column-gap: 39px;
+  align-items: center;
+}
+
+.introductionActionItem {
+  display: contents;
+}
+
+.introductionButton {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  width: 200px;
+  height: 36px;
+  padding: 0 24px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: var(--introduction-button-background);
+  color: var(--introduction-button-color);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.2;
+  opacity: 0.84;
+  text-align: center;
+  transform: none;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.introductionButton:focus,
+.introductionButton:focus-visible,
+.introductionButton:active {
+  border-radius: 999px;
+  background: var(--introduction-button-background);
+  box-shadow: none;
+  color: var(--introduction-button-color);
+  filter: none;
+  outline: none;
+  transform: none;
+}
+
+.introductionButton:hover {
+  background: var(--introduction-button-hover-background);
+}
+
+.introductionButtonLabel {
+  position: relative;
+  z-index: 3;
+  padding: 4px 8px;
+  background: transparent;
+}
+
+.introductionPanel {
+  position: absolute;
+  z-index: 2;
+  top: auto;
+  right: 32px;
+  bottom: 100px;
+  width: min(500px, calc(100% - 760px));
+  max-height: calc(100% - 100px);
+  overflow: auto;
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0);
+  box-shadow: 0 18px 54px rgba(0, 0, 0, 0);
+  color: #212121;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(18px);
+  transition:
+    background-color 320ms var(--ease-standard),
+    border-color 320ms var(--ease-standard),
+    box-shadow 320ms var(--ease-standard),
+    opacity 260ms var(--ease-standard),
+    transform 320ms var(--ease-emphasized);
+  visibility: hidden;
+}
+
+.introductionPanelOpen {
+  border-color: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.2);
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.introductionPanelContent {
+  padding: 26px 28px 28px;
+  animation: introduction-panel-content-in 240ms var(--ease-standard);
+}
+
+.introductionPanelHeader {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.introductionPanelHeader h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(28px, 2.6vw, 38px);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.introductionPanelClose {
+  display: grid;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(21, 21, 21, 0.1);
+  color: #212121;
+  cursor: pointer;
+  font-size: 21px;
+  line-height: 1;
+}
+
+.introductionPanelBody {
+  margin-top: 20px;
+  color: #494952;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.introductionPanelBody p {
+  margin: 0;
+}
+
+.introductionPanelBody p + p {
+  margin-top: 14px;
+}
+
+@keyframes introduction-panel-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1100px) {
+  .heroExpanded {
+    min-height: 760px;
+  }
+
+  .introductionPanel {
+    top: auto;
+    right: 24px;
+    bottom: 100px;
+    left: 24px;
+    width: auto;
+    max-height: none;
+    transform: translateY(12px);
+  }
+
+  .introductionPanelOpen {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 860px) {
+  .hero {
+    width: calc(100% - 40px);
+    height: clamp(600px, calc(100svh - 64px), 820px);
+    min-height: 0;
+    aspect-ratio: auto;
+    margin-top: var(--site-header-height);
+  }
+
+  .introductionCard {
+    top: 24px;
+    left: 24px;
+    grid-template-columns: minmax(0, 1fr) minmax(180px, 0.72fr);
+    gap: 14px;
+    width: min(660px, calc(100% - 48px));
+    height: 260px;
+    padding: 18px 14px 16px 22px;
+  }
+
+  .introductionCopy h1 {
+    font-size: clamp(36px, 5.2vw, 44px);
+  }
+
+  .introductionCopy > p:last-child {
+    margin-top: 14px;
+    font-size: 14px;
+  }
+
+  .introductionActions {
+    right: 24px;
+    bottom: 24px;
+  }
+
+  .introductionPanel {
+    bottom: 84px;
+  }
+
+  .introductionButton {
+    width: 170px;
+    height: 36px;
+    padding: 0 20px;
+    font-size: 14px;
+  }
+
+}
+
+@media (max-width: 620px) {
+  .hero {
+    height: max(760px, calc(100svh - 64px));
+  }
+
+  .heroImage {
+    object-position: center;
+  }
+
+  .introductionCard {
+    top: 16px;
+    right: 16px;
+    bottom: 120px;
+    left: 16px;
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-columns: 1fr;
+    gap: 12px;
+    width: auto;
+    height: auto;
+    padding: 34px 28px 0;
+    border-radius: 12px;
+    transform: none;
+  }
+
+  .introductionCopy h1 {
+    font-size: clamp(43px, 13vw, 62px);
+    line-height: 0.96;
+  }
+
+  .introductionCopy > p:last-child {
+    margin-top: 26px;
+    font-size: 16px;
+  }
+
+  .portraitFrame {
+    width: min(88%, 360px);
+    justify-self: end;
+  }
+
+  .introductionActions {
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    justify-content: flex-end;
+  }
+
+  .introductionButton {
+    flex: 1 1 0;
+    width: auto;
+    max-width: 160px;
+    height: 36px;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+
+  .introductionButtonLabel {
+    padding-inline: 4px;
+  }
+
+  .heroExpanded {
+    height: max(1300px, calc(100svh - 64px));
+  }
+
+  .heroExpanded .introductionCard {
+    bottom: 640px;
+  }
+
+  .introductionPanel {
+    top: auto;
+    right: 16px;
+    bottom: 68px;
+    left: 16px;
+    height: auto;
+    max-height: 560px;
+    border-radius: 12px;
+  }
+
+  .introductionPanelContent {
+    padding: 22px 20px 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .introductionPanel,
+  .introductionPanelContent {
+    animation: none;
+    transition: none;
+  }
+}

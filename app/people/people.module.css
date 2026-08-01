@@ -1,6 +1,21 @@
 .peoplePage {
+  --people-inline-inset: clamp(40px, 10vw, 160px);
+  --people-content-width: min(
+    calc(100% - var(--people-inline-inset)),
+    1100px
+  );
+  --people-ink-soft: color-mix(
+    in srgb,
+    var(--color-text) 62%,
+    var(--color-canvas)
+  );
+  --people-ink-faint: color-mix(
+    in srgb,
+    var(--color-text) 42%,
+    var(--color-canvas)
+  );
   min-height: calc(100vh - 61px);
-  padding: 0 0 160px;
+  padding: 0 0 clamp(104px, 10vw, 144px);
 }
 
 .feed {
@@ -8,12 +23,147 @@
   margin: 0;
 }
 
+.peopleHero {
+  width: var(--people-content-width);
+  margin: clamp(56px, 6vw, 88px) auto 0;
+}
+
+.heroTopline {
+  display: flex;
+  min-height: 34px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.heroKicker,
+.heroDescriptor,
+.profilesKicker,
+.profilesCount {
+  margin: 0;
+  font-size: 11px;
+  font-weight: var(--font-weight-interactive);
+  letter-spacing: 0.115em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.heroKicker,
+.profilesKicker,
+.profilesCount {
+  color: var(--people-ink-faint);
+}
+
+.heroDescriptor {
+  color: var(--people-ink-soft);
+  text-align: right;
+}
+
+.heroStatement {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.65fr);
+  gap: clamp(56px, 8vw, 120px);
+  padding-top: clamp(44px, 5vw, 68px);
+  align-items: end;
+}
+
+.heroStatement h1 {
+  min-width: 0;
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(72px, 7.6vw, 112px);
+  font-weight: 400;
+  letter-spacing: -0.065em;
+  line-height: 0.88;
+  text-wrap: balance;
+}
+
+.heroIntroduction {
+  max-width: 37ch;
+  margin: 0 0 5px;
+  color: var(--people-ink-soft);
+  font-size: clamp(16px, 1.3vw, 18px);
+  letter-spacing: var(--tracking-content);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.heroImageStrip {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: clamp(96px, 8.5vw, 124px);
+  margin-top: clamp(40px, 4vw, 54px);
+  border-radius: 16px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(4, 4, 3, 0.55),
+      rgba(4, 4, 3, 0.08) 52%,
+      rgba(4, 4, 3, 0.24)
+    ),
+    url("/people-prefire-hero-crop.png") center 48% / cover no-repeat;
+  box-shadow: var(--shadow-subtle);
+}
+
+.heroImageStrip::after {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: inherit;
+  content: "";
+  pointer-events: none;
+}
+
+.profilesHeader {
+  display: grid;
+  width: var(--people-content-width);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: clamp(48px, 8vw, 120px);
+  margin: clamp(80px, 8vw, 112px) auto 0;
+  padding-top: 24px;
+  align-items: end;
+  border-top: 1px solid var(--color-rule);
+}
+
+.profilesKicker {
+  margin-bottom: 12px;
+}
+
+.profilesHeader h2 {
+  margin: 0;
+  font-size: clamp(34px, 3.4vw, 50px);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.profilesContext {
+  min-width: 0;
+}
+
+.profilesCount {
+  margin-bottom: 14px;
+}
+
+.profilesSummary {
+  max-width: 38ch;
+  margin: 0;
+  color: var(--people-ink-soft);
+  font-size: 15px;
+  letter-spacing: var(--tracking-content);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
 .gallery {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(16px, 1.8vw, 24px);
-  width: min(calc(100% - 48px), 960px);
-  margin: clamp(72px, 8vw, 112px) auto 0;
+  width: var(--people-content-width);
+  margin: clamp(36px, 4vw, 52px) auto 0;
 }
 
 .galleryColumn {
@@ -33,9 +183,10 @@
   position: relative;
   overflow: hidden;
   aspect-ratio: 4 / 5;
-  border-radius: 0;
+  border-radius: 6px;
   background: var(--color-surface-card);
-  box-shadow: var(--shadow-surface);
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var(--color-border-subtle) 48%, transparent);
   isolation: isolate;
 }
 
@@ -44,7 +195,7 @@
   inset: 0;
   overflow: hidden;
   transform: scale(1);
-  transition: transform var(--duration-standard) var(--ease-emphasized);
+  transition: transform 520ms var(--ease-emphasized);
 }
 
 .portraitImage {
@@ -58,7 +209,11 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: var(--color-surface-card);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--color-surface-card) 91%, var(--color-canvas)),
+    var(--color-surface-card)
+  );
 }
 
 .placeholderHead,
@@ -104,10 +259,12 @@
   letter-spacing: var(--tracking-content);
   line-height: 1.2;
   text-align: center;
+  text-wrap: balance;
   opacity: 0.92;
+  transform: translateY(1px);
   transition:
-    font-weight var(--duration-fast) var(--ease-standard),
-    opacity var(--duration-fast) var(--ease-standard);
+    opacity var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
 }
 
 .card[data-has-image="false"] .name {
@@ -115,80 +272,22 @@
   background: transparent;
 }
 
-.influenceSection {
-  position: relative;
-  display: grid;
-  width: 100%;
-  min-height: clamp(234px, 21.666vw, 338px);
-  margin: -1px 0 0;
-  padding: clamp(36px, 4vw, 56px);
-  overflow: hidden;
-  background: #403a31;
-  isolation: isolate;
-  place-items: center;
-}
-
-.influenceSection::before,
-.influenceSection::after {
-  position: absolute;
-  inset: 0;
-  content: "";
-}
-
-.influenceSection::before {
-  z-index: -2;
-  background: url("/people-influence-hero.jpg") center / cover no-repeat;
-}
-
-.influenceSection::after {
-  z-index: -1;
-  background: linear-gradient(
-    90deg,
-    rgba(232, 220, 194, 0.1),
-    rgba(232, 220, 194, 0.66) 30%,
-    rgba(232, 220, 194, 0.76) 50%,
-    rgba(232, 220, 194, 0.66) 70%,
-    rgba(232, 220, 194, 0.1)
-  );
-}
-
-.influencePassage {
-  position: relative;
-  z-index: 1;
-  max-width: 1200px;
-  margin: 0;
-  color: #212121;
-  font-family: "Iowan Old Style", Baskerville, "Times New Roman", serif;
-  font-size: clamp(17px, 1.55vw, 22px);
-  font-weight: 500;
-  letter-spacing: 0.008em;
-  line-height: 1.65;
-  text-align: center;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.24);
-  text-wrap: balance;
-}
-
-.influencePassage span {
-  display: block;
-  white-space: nowrap;
-}
-
 .loadMoreSentinel {
   display: grid;
-  width: min(calc(100% - 48px), 960px);
+  width: var(--people-content-width);
   min-height: 1px;
-  margin: clamp(48px, 7vw, 80px) auto 0;
+  margin: clamp(40px, 5vw, 64px) auto 0;
   place-items: center;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .card:hover .portrait {
-    transform: scale(1.018);
+    transform: scale(1.022);
   }
 
   .card:hover .name {
-    font-weight: var(--font-weight-brand);
     opacity: var(--state-hover-opacity);
+    transform: translateY(0);
   }
 }
 
@@ -197,9 +296,77 @@
     padding: 0 0 96px;
   }
 
+  .peopleHero {
+    margin-top: 40px;
+  }
+
+  .heroTopline {
+    min-height: 30px;
+    gap: 16px;
+  }
+
+  .heroDescriptor {
+    max-width: 16ch;
+  }
+
+  .heroStatement {
+    grid-template-columns: 1fr;
+    gap: 26px;
+    padding-top: 32px;
+  }
+
+  .heroStatement h1 {
+    max-width: 6.5ch;
+    font-size: clamp(48px, 15vw, 68px);
+  }
+
+  .heroIntroduction {
+    max-width: 34ch;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.52;
+  }
+
+  .heroImageStrip {
+    height: 88px;
+    margin-top: 34px;
+    border-radius: 12px;
+    background-position: 47% 48%;
+  }
+
+  .profilesHeader {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-top: 64px;
+    padding-top: 20px;
+  }
+
+  .profilesKicker {
+    margin-bottom: 10px;
+  }
+
+  .profilesHeader h2 {
+    font-size: 34px;
+  }
+
+  .profilesContext {
+    display: grid;
+    grid-template-columns: minmax(72px, auto) minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+
+  .profilesCount {
+    margin: 3px 0 0;
+  }
+
+  .profilesSummary {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
   .gallery {
-    width: calc(100% - 40px);
-    margin-top: 56px;
+    margin-top: 32px;
   }
 
   .gallery,
@@ -209,29 +376,43 @@
 
   .name {
     padding: var(--space-5) var(--space-1) var(--space-2);
-    font-size: clamp(10px, 3vw, 12px);
+    font-size: clamp(10px, 2.85vw, 11.5px);
+    line-height: 1.16;
+  }
+}
+
+@media (max-width: 360px) {
+  .peoplePage {
+    --people-inline-inset: 32px;
   }
 
-  .influenceSection {
-    min-height: 234px;
-    padding: 32px 20px;
+  .heroKicker,
+  .heroDescriptor,
+  .profilesKicker,
+  .profilesCount {
+    font-size: 10px;
   }
 
-  .influencePassage {
-    font-size: clamp(16px, 4.5vw, 18px);
-    line-height: 1.55;
+  .heroStatement h1 {
+    font-size: 48px;
   }
 
-  .influencePassage span {
-    white-space: normal;
+  .heroIntroduction {
+    font-size: 13px;
   }
 
-  .influencePassage span + span {
-    margin-top: 8px;
+  .profilesContext {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
-  .loadMoreSentinel {
-    width: calc(100% - 40px);
+  .profilesSummary {
+    max-width: 31ch;
+  }
+
+  .gallery,
+  .galleryColumn {
+    gap: 8px;
   }
 }
 
