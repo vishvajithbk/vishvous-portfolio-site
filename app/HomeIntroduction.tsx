@@ -11,9 +11,9 @@ const introPanels = [
     title: "Me in 10 seconds",
     content: (
       <p>
-        I&apos;m Vishvajith—a curious builder and lifelong learner exploring
-        technology, science, and the systems that connect ambitious ideas to
-        useful work.
+        I&apos;m Vishvajith—a world citizen, entrepreneur, and lifelong student. I
+        follow ambitious questions across technology and science, then turn
+        what I learn into products, experiments, and clearer ways of thinking.
       </p>
     ),
   },
@@ -30,15 +30,15 @@ const introPanels = [
           thinking.
         </p>
         <p>
-          My time is split between building, writing, researching, and learning
-          from people across different disciplines. I care about curiosity,
-          independent thought, patient iteration, and creating work that stays
-          useful beyond the moment it was made.
+          My time moves between building, writing, researching, and learning
+          from people across different disciplines. This is where I keep a
+          deliberately small index of the work, people, and discoveries that
+          continue to shape that path.
         </p>
         <p>
-          This is temporary draft copy. It will eventually become a fuller
-          account of the experiences, principles, interests, and relationships
-          that continue to shape my path.
+          I care about curiosity, independent thought, patient iteration, and
+          work that remains useful after the moment has passed. Vishvous is not
+          a complete archive; it is a map of what feels worth carrying forward.
         </p>
       </>
     ),
@@ -46,105 +46,155 @@ const introPanels = [
 ] as const;
 
 export function HomeIntroduction() {
-  const [activePanelId, setActivePanelId] = useState<IntroPanelId | null>(null);
-  const activePanel = introPanels.find((panel) => panel.id === activePanelId);
+  const [selectedPanelId, setSelectedPanelId] =
+    useState<IntroPanelId>("seconds");
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const selectedPanel = introPanels.find(
+    (panel) => panel.id === selectedPanelId,
+  );
+
+  const togglePanel = (panelId: IntroPanelId) => {
+    if (panelId === selectedPanelId) {
+      setIsPanelOpen((isOpen) => !isOpen);
+      return;
+    }
+
+    setSelectedPanelId(panelId);
+    setIsPanelOpen(true);
+  };
 
   return (
-    <div className={styles.homeIntroduction}>
-      <section
-        className={`${styles.hero} ${activePanel ? styles.heroExpanded : ""}`}
-        aria-labelledby="home-introduction-title"
-      >
-        {/* This supplied photograph is intentionally presented without added branding. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className={styles.heroImage}
-          src="/home-hero-observatory-cropped.png"
-          alt="A radio telescope beneath a star-filled night sky"
-          width="1717"
-          height="916"
-        />
+    <section
+      className={styles.homeIntroduction}
+      aria-labelledby="home-introduction-title"
+    >
+      <header className={styles.heroHeader}>
+        <div className={styles.heroTopline}>
+          <p>A public index in motion</p>
+          <div className={styles.heroToplineEndpoint}>
+            <nav
+              className={styles.heroIdentityLinks}
+              aria-label="Social and publishing links"
+            >
+              <span>X</span>
+              <span aria-hidden="true">·</span>
+              <span>LinkedIn</span>
+              <span aria-hidden="true">·</span>
+              <span>GitHub</span>
+              <span aria-hidden="true">·</span>
+              <a
+                href="https://vishvajithbk.substack.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Substack, opens in a new tab"
+              >
+                Substack
+              </a>
+            </nav>
+            <div className={styles.heroToplinePortrait}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className={styles.heroToplinePortraitImage}
+                src="/home-introduction-portrait.png"
+                alt="Portrait of Vishvajith BK"
+                width="1254"
+                height="1254"
+              />
+            </div>
+          </div>
+        </div>
 
-        <div className={styles.introductionCard}>
-          <div className={styles.introductionCopy}>
-            <h1 id="home-introduction-title">
-              <span>World citizen.</span>
-              <span>Entrepreneur.</span>
-              <span>Student of life.</span>
-            </h1>
+        <div className={styles.heroStatement}>
+          <h1 id="home-introduction-title">
+            <span>World citizen.</span>
+            <span>Entrepreneur.</span>
+            <span>Student of life.</span>
+          </h1>
+          <div className={styles.heroCopy}>
             <p>
-              I build, learn, and explore across technology, science, and the
-              wider world—following questions wherever they lead.
+              I&apos;m Vishvajith. I build, write, and learn across technology,
+              science, and the wider world—following useful questions and
+              sharing what they become.
+            </p>
+            <p>
+              Vishvous is a living index of the work, ideas, people, and
+              discoveries shaping that path.
             </p>
           </div>
-
-          <div className={styles.portraitFrame}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/home-introduction-portrait.png"
-              alt="Portrait of Vishvajith BK"
-              width="1254"
-              height="1254"
-            />
-          </div>
         </div>
 
-        <div
-          className={styles.introductionActions}
-          aria-label="Introduction options"
-        >
-          {introPanels.map((panel) => (
-            <div className={styles.introductionActionItem} key={panel.id}>
-              <button
-                className={styles.introductionButton}
-                type="button"
-                aria-controls="home-introduction-panel"
-                aria-expanded={activePanelId === panel.id}
-                onClick={() =>
-                  setActivePanelId((currentPanelId) =>
-                    currentPanelId === panel.id ? null : panel.id,
-                  )
-                }
-              >
-                <span className={styles.introductionButtonLabel}>
-                  {panel.title}
-                </span>
-              </button>
-            </div>
-          ))}
+      </header>
+
+      <div className={styles.introductionRail}>
+        <div className={styles.introductionRailCopy}>
+          <p className={styles.introductionKicker}>Begin here</p>
+          <p>Take the short introduction, or stay for the longer version.</p>
         </div>
 
-        <section
-          className={`${styles.introductionPanel} ${
-            activePanel ? styles.introductionPanelOpen : ""
-          }`}
-          id="home-introduction-panel"
-          aria-hidden={!activePanel}
-          aria-live="polite"
-        >
-          {activePanel ? (
-            <article
-              className={styles.introductionPanelContent}
-              key={activePanel.id}
-            >
-              <header className={styles.introductionPanelHeader}>
-                <h2 id="home-introduction-panel-title">{activePanel.title}</h2>
+        <div className={styles.introductionControls}>
+          <div
+            className={styles.introductionActions}
+            aria-label="Introduction options"
+          >
+            {introPanels.map((panel) => (
+              <div className={styles.introductionActionItem} key={panel.id}>
                 <button
-                  className={styles.introductionPanelClose}
+                  className={styles.introductionButton}
                   type="button"
-                  aria-label="Close introduction"
-                  onClick={() => setActivePanelId(null)}
+                  aria-controls="home-introduction-panel"
+                  aria-expanded={isPanelOpen && selectedPanelId === panel.id}
+                  onClick={() => togglePanel(panel.id)}
                 >
-                  <span aria-hidden="true">×</span>
+                  <span className={styles.introductionButtonLabel}>
+                    {panel.title}
+                  </span>
+                  <span
+                    className={styles.introductionButtonArrow}
+                    aria-hidden="true"
+                  >
+                    {isPanelOpen && selectedPanelId === panel.id ? "−" : "+"}
+                  </span>
                 </button>
-              </header>
-              <div className={styles.introductionPanelBody}>
-                {activePanel.content}
               </div>
-            </article>
-          ) : null}
-        </section>
-      </section>
-    </div>
+            ))}
+          </div>
+
+          <section
+            className={`${styles.introductionPanel} ${
+              isPanelOpen ? styles.introductionPanelOpen : ""
+            }`}
+            id="home-introduction-panel"
+            aria-hidden={!isPanelOpen}
+            aria-live="polite"
+          >
+            <div className={styles.introductionPanelReveal}>
+              <article
+                className={styles.introductionPanelContent}
+                key={selectedPanel?.id}
+              >
+                <header className={styles.introductionPanelHeader}>
+                  <p>About</p>
+                  <h2 id="home-introduction-panel-title">
+                    {selectedPanel?.title}
+                  </h2>
+                  <button
+                    className={styles.introductionPanelClose}
+                    type="button"
+                    aria-label="Close introduction"
+                    tabIndex={isPanelOpen ? undefined : -1}
+                    onClick={() => setIsPanelOpen(false)}
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </header>
+                <div className={styles.introductionPanelBody}>
+                  {selectedPanel?.content}
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
   );
 }

@@ -58,8 +58,17 @@ test("server-renders the Vishvous shell", async () => {
   assert.match(html, /aria-label="Dark appearance"/i);
   assert.doesNotMatch(html, /aria-label="Darker appearance"/i);
   assert.match(html, /aria-label="Work page"/i);
-  assert.match(html, /src="\/home-hero-observatory-cropped\.png"/i);
+  assert.doesNotMatch(html, /src="\/home-hero-observatory-cropped\.png"/i);
   assert.match(html, /src="\/home-introduction-portrait\.png"/i);
+  assert.doesNotMatch(html, /home-introduction-portrait-dark\.png/i);
+  assert.equal(
+    (html.match(/src="\/home-introduction-portrait\.png"/g) ?? []).length,
+    1,
+  );
+  assert.equal(
+    (html.match(/alt="Portrait of Vishvajith BK"/g) ?? []).length,
+    1,
+  );
   assert.match(html, /World citizen\./i);
   assert.match(html, /Entrepreneur\./i);
   assert.match(html, /Student of life\./i);
@@ -156,6 +165,14 @@ test("renders the image-ready Work showcase on Home", async () => {
 
   const html = await response.text();
   assert.match(html, /aria-label="Introduction options"/i);
+  assert.doesNotMatch(html, /aria-label="Vishvajith BK profile"/i);
+  assert.doesNotMatch(html, /World citizen · Entrepreneur/i);
+  assert.doesNotMatch(
+    html,
+    /Building, writing, and learning across technology and science\./i,
+  );
+  assert.doesNotMatch(html, /Building, learning, exploring/i);
+  assert.doesNotMatch(html, /home-hero-observatory-cropped\.png/i);
   for (const label of ["Me in 10 seconds", "Me in 10 minutes"]) {
     assert.match(
       html,
@@ -171,15 +188,15 @@ test("renders the image-ready Work showcase on Home", async () => {
     /<section[^>]*id="home-introduction-panel"[^>]*aria-hidden="true"/i,
   );
   assert.doesNotMatch(html, /<dialog[^>]*id="home-introduction-dialog"/i);
-  assert.equal((html.match(/src="\/work-globe\.svg"/g) ?? []).length, 1);
+  assert.doesNotMatch(html, /src="\/work-globe\.svg"/i);
   assert.doesNotMatch(html, /src="\/filter-circle\.svg"/i);
   assert.doesNotMatch(html, /aria-label="Posts invitation"/i);
-  assert.match(html, /<footer[^>]*aria-label="Contact and links"/i);
+  assert.match(html, /<footer[^>]*aria-label="Contact"/i);
   assert.match(html, /aria-label="Ask me anything"/i);
   assert.ok(
-    html.indexOf('src="/home-hero-observatory-cropped.png"') <
+    html.indexOf('src="/home-introduction-portrait.png"') <
       html.indexOf('aria-label="Introduction options"'),
-    "the hero should appear before the introduction controls",
+    "the top-line portrait should appear before the introduction controls",
   );
   assert.ok(
     html.indexOf('aria-label="Introduction options"') <
@@ -196,17 +213,40 @@ test("renders the image-ready Work showcase on Home", async () => {
   assert.match(html, /src="\/work-blogs\.svg\?v=2"/i);
   assert.match(html, /src="\/work-projects\.svg\?v=1"/i);
   assert.match(html, /src="\/work-research\.svg\?v=1"/i);
-  assert.match(html, /src="\/work-globe\.svg"/i);
+  assert.doesNotMatch(html, /class="[^"]*cardNumber/i);
   for (const category of ["Blogs", "Projects", "Research"]) {
-    assert.match(
-      html,
+    const categoryArticle = html.match(
       new RegExp(
-        `<button[^>]*aria-controls="work-catalog-dialog"[^>]*aria-expanded="false"[^>]*aria-haspopup="dialog"[^>]*>\\s*${category}\\s*<\\/button>`,
+        `<article[^>]*id="${category.toLowerCase()}"[^>]*>[\\s\\S]*?<\\/article>`,
         "i",
       ),
-      category,
+    )?.[0];
+    const categoryButton = html.match(
+      new RegExp(
+        `<button[^>]*aria-label="Open ${category} index"[^>]*>[\\s\\S]*?<\\/button>`,
+        "i",
+      ),
+    )?.[0];
+    assert.ok(categoryButton, category);
+    assert.match(categoryButton, new RegExp(`<span>${category}<\\/span>`, "i"));
+    assert.doesNotMatch(
+      categoryButton,
+      /↗/,
+      `${category} catalog button should not show an outbound arrow`,
+    );
+    assert.ok(categoryArticle, `${category} card should render`);
+    assert.doesNotMatch(
+      categoryArticle,
+      new RegExp(`<h3[^>]*>${category}<\\/h3>`, "i"),
+      `${category} should not repeat as a heading below the image`,
+    );
+    assert.doesNotMatch(
+      categoryArticle,
+      /↗/,
+      `${category} card actions should not show outbound arrows`,
     );
   }
+  assert.doesNotMatch(html, />Open index<\/span>/i);
   assert.match(html, /<dialog[^>]*id="work-catalog-dialog"/i);
   assert.match(html, /role="dialog"/i);
   assert.match(html, /aria-modal="true"/i);
@@ -215,15 +255,35 @@ test("renders the image-ready Work showcase on Home", async () => {
   assert.match(html, /href="https:\/\/vishvajithbk\.substack\.com\/"/i);
   assert.match(html, /href="https:\/\/github\.com\/"/i);
   assert.match(html, /href="https:\/\/medium\.com\/"/i);
-  assert.equal((html.match(/>Go to site<\/a>/g) ?? []).length, 3);
+  assert.doesNotMatch(html, />Go to site<\/a>/i);
   assert.equal((html.match(/target="_blank"/g) ?? []).length, 4);
   assert.equal((html.match(/rel="noopener noreferrer"/g) ?? []).length, 4);
+  assert.match(html, /aria-label="Social and publishing links"/i);
+  assert.match(html, />A public index in motion</i);
+  assert.doesNotMatch(html, />Home<\/p>/i);
+  assert.doesNotMatch(html, />Elsewhere</i);
+  assert.doesNotMatch(html, /Around the web\./i);
   assert.match(html, /aria-label="Work categories"/i);
   assert.ok(
+    html.indexOf('aria-label="Social and publishing links"') <
+      html.indexOf('src="/home-introduction-portrait.png"'),
+    "the social links should sit immediately before the top-line portrait",
+  );
+  assert.ok(
+    html.indexOf('aria-label="Social and publishing links"') <
+      html.indexOf('aria-label="Work categories"'),
+    "the hero links should appear before the Work cards",
+  );
+  assert.ok(
     html.indexOf('aria-label="Work categories"') <
-      html.indexOf('aria-label="Contact and links"'),
+      html.indexOf('aria-label="Contact"'),
     "the footer should appear below the Work cards",
   );
+  const footer = html.match(
+    /<footer[^>]*aria-label="Contact"[^>]*>[\s\S]*?<\/footer>/i,
+  )?.[0];
+  assert.ok(footer, "the Contact footer should render");
+  assert.doesNotMatch(footer, />Links<|LinkedIn|Substack/i);
   assert.match(html, /aria-label="Blog posts"/i);
   assert.match(html, /aria-label="Projects"/i);
   assert.match(html, /aria-label="Research"/i);
@@ -306,6 +366,12 @@ test("renders the initial three-column People feed with names only", async () =>
   assert.equal(response.status, 200);
 
   const html = await response.text();
+  assert.match(html, /aria-labelledby="people-hero-title"/i);
+  assert.match(html, /<h1[^>]*id="people-hero-title"[^>]*>A record of influence\.<\/h1>/i);
+  assert.match(
+    html,
+    /These are people whose work, choices, and ways of thinking have shaped how I see the world\./i,
+  );
   for (const name of [
     "Sam Altman",
     "Elon Musk",

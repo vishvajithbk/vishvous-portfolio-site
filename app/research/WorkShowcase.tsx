@@ -244,8 +244,8 @@ export function WorkShowcase() {
   }
 
   return (
-    <main className={styles.workPage} aria-label="Work page">
-      <h1 className="sr-only">Work</h1>
+    <section className={styles.workPage} aria-label="Work page">
+      <h2 className="sr-only">Work</h2>
 
       <section className={styles.workGrid} aria-label="Work categories">
         {workCategories.map((category) => (
@@ -268,8 +268,6 @@ export function WorkShowcase() {
             </div>
 
             <div className={styles.cardCopy}>
-              <h2 className="sr-only">{category.title}</h2>
-
               <div className={styles.cardActions}>
                 <button
                   className={`${styles.actionButton} ${styles.primaryButton}`}
@@ -277,11 +275,12 @@ export function WorkShowcase() {
                   aria-controls="work-catalog-dialog"
                   aria-expanded={activeCatalog === category.id}
                   aria-haspopup="dialog"
+                  aria-label={`Open ${category.title} index`}
                   onClick={(event) =>
                     openCatalog(category.id, event.currentTarget)
                   }
                 >
-                  {category.title}
+                  <span>{category.title}</span>
                 </button>
 
                 <a
@@ -291,7 +290,7 @@ export function WorkShowcase() {
                   rel="noopener noreferrer"
                   aria-label={`Go to ${category.siteName}, opens in a new tab`}
                 >
-                  Go to site
+                  <span>{category.siteName}</span>
                 </a>
               </div>
 
@@ -301,7 +300,7 @@ export function WorkShowcase() {
         ))}
       </section>
 
-      <footer className={styles.siteFooter} aria-label="Contact and links">
+      <footer className={styles.siteFooter} aria-label="Contact">
         <div className={styles.footerDetails}>
           <p className={styles.footerLabel}>Contact</p>
           <p>hello@vishvous.com</p>
@@ -333,17 +332,7 @@ export function WorkShowcase() {
           </button>
         </form>
 
-        <div className={`${styles.footerDetails} ${styles.footerLinks}`}>
-          <p className={styles.footerLabel}>Links</p>
-          <p>X · LinkedIn · GitHub</p>
-          <a
-            href="https://vishvajithbk.substack.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Substack
-          </a>
-        </div>
+        <div className={styles.footerSpacer} aria-hidden="true" />
       </footer>
 
       <dialog
@@ -511,6 +500,6 @@ export function WorkShowcase() {
           </div>
         </div>
       </dialog>
-    </main>
+    </section>
   );
 }

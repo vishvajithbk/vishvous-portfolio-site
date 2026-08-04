@@ -133,22 +133,23 @@ export function PeopleGallery() {
       className={styles.feed}
       aria-label="People who shaped Vishva's thinking"
     >
-      <header className={styles.peopleHero}>
+      <header
+        className={styles.peopleHero}
+        aria-labelledby="people-hero-title"
+      >
         <div className={styles.heroTopline}>
           <p className={styles.heroKicker}>People</p>
           <p className={styles.heroDescriptor}>A living index of influence</p>
         </div>
 
         <div className={styles.heroStatement}>
-          <h1>A record of influence.</h1>
+          <h1 id="people-hero-title">A record of influence.</h1>
           <p className={styles.heroIntroduction}>
             These are people whose work, choices, and ways of thinking have
             shaped how I see the world. I return to their ideas often—not to
             imitate them, but to expand what I believe is possible.
           </p>
         </div>
-
-        <div className={styles.heroImageStrip} aria-hidden="true" />
       </header>
 
       <header className={styles.profilesHeader}>

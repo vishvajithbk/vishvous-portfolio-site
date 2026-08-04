@@ -1,41 +1,92 @@
-.homeIntroduction {
-  --introduction-button-background: #ffffff;
-  --introduction-button-hover-background: #d8d8d8;
-  --introduction-button-color: #151515;
-
+.homePage {
+  --home-inline-inset: clamp(40px, 10vw, 160px);
+  --home-content-width: min(
+    calc(100% - var(--home-inline-inset)),
+    1100px
+  );
+  --home-ink-soft: color-mix(
+    in srgb,
+    var(--color-text) 62%,
+    var(--color-canvas)
+  );
+  --home-ink-faint: color-mix(
+    in srgb,
+    var(--color-text) 42%,
+    var(--color-canvas)
+  );
+  min-height: calc(100vh - var(--site-header-height));
   overflow: hidden;
   background: var(--color-canvas);
 }
 
-:global([data-appearance="dark"]) .homeIntroduction {
-  --introduction-button-background: #ffffff;
-  --introduction-button-hover-background: #d8d8d8;
-  --introduction-button-color: #151515;
+.homeIntroduction,
+.workIntroduction {
+  width: var(--home-content-width);
+  margin-right: auto;
+  margin-left: auto;
 }
 
-.hero {
+.homeIntroduction {
+  padding-top: clamp(56px, 6vw, 88px);
+}
+
+.heroTopline,
+.workTopline {
+  display: grid;
+  min-height: 34px;
+  align-items: start;
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.heroTopline {
+  --hero-topline-portrait-size: clamp(112px, 10vw, 144px);
   position: relative;
-  width: min(calc(100% - 72px), 1400px);
-  height: auto;
-  min-height: 620px;
-  aspect-ratio: 1717 / 916;
-  margin: var(--site-header-height) auto 0;
-  overflow: hidden;
-  border-radius: var(--radius-gallery);
-  background: #050505;
+  min-height: var(--hero-topline-portrait-size);
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  border-bottom: 0;
   isolation: isolate;
 }
 
-.hero::after {
+.heroTopline::before {
   position: absolute;
-  z-index: 1;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.08);
+  z-index: 0;
+  top: calc(var(--hero-topline-portrait-size) / 2);
+  right: var(--hero-topline-portrait-size);
+  left: 0;
+  height: 1px;
+  background: var(--color-rule);
   content: "";
-  pointer-events: none;
+  transform: translateY(-0.5px);
 }
 
-.heroImage {
+.heroTopline > p:first-child {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+  margin-top: 0;
+  transform: translateY(-22px);
+}
+
+.heroToplineEndpoint {
+  display: flex;
+  z-index: 1;
+  grid-column: 3;
+  align-items: center;
+  gap: clamp(16px, 2.2vw, 28px);
+}
+
+.heroToplinePortrait {
+  flex: 0 0 var(--hero-topline-portrait-size);
+  width: var(--hero-topline-portrait-size);
+  height: var(--hero-topline-portrait-size);
+  overflow: hidden;
+  border: 1px solid var(--color-rule);
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.heroToplinePortraitImage {
   display: block;
   width: 100%;
   height: 100%;
@@ -43,214 +94,306 @@
   object-position: center;
 }
 
-.introductionCard {
-  position: absolute;
-  z-index: 2;
-  top: 32px;
-  left: 32px;
+.heroIdentityLinks {
+  display: flex;
+  max-width: min(330px, calc(100vw - 40px));
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  color: var(--home-ink-faint);
+  font-size: 11px;
+  letter-spacing: var(--tracking-meta);
+  line-height: 1.35;
+  text-align: right;
+  transform: translateY(-22px);
+}
+
+.heroIdentityLinks a {
+  color: inherit;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.heroIdentityLinks a:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--color-text);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .heroIdentityLinks a:hover {
+    color: var(--color-text);
+  }
+}
+
+.heroTopline p,
+.workTopline p,
+.introductionKicker,
+.introductionPanelHeader > p {
+  margin: 0;
+  font-size: 11px;
+  font-weight: var(--font-weight-interactive);
+  letter-spacing: 0.115em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.heroTopline p:first-child,
+.workTopline p:first-child,
+.introductionKicker,
+.introductionPanelHeader > p {
+  color: var(--home-ink-faint);
+}
+
+.workTopline p:last-child {
+  color: var(--home-ink-soft);
+  text-align: right;
+}
+
+.heroStatement {
   display: grid;
-  grid-template-columns: minmax(0, 1.28fr) minmax(190px, 0.72fr);
-  gap: 16px;
-  align-items: stretch;
-  width: min(660px, calc(100% - 64px));
-  height: 260px;
-  padding: 20px 16px 18px 28px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  border-radius: 14px;
-  background: #ffffff;
-  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.3);
-  color: #0b1222;
-  opacity: 0.84;
-  transform: none;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.65fr);
+  gap: clamp(56px, 8vw, 120px);
+  padding-top: clamp(44px, 5vw, 68px);
+  align-items: end;
 }
 
-.introductionCopy {
-  align-self: center;
+.heroStatement h1 {
   min-width: 0;
-}
-
-.introductionCopy h1 {
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(40px, 3.7vw, 52px);
+  font-size: clamp(70px, 7.4vw, 108px);
   font-weight: 400;
-  letter-spacing: -0.055em;
-  line-height: 0.94;
+  letter-spacing: -0.065em;
+  line-height: 0.88;
 }
 
-.introductionCopy h1 span {
+.heroStatement h1 span {
   display: block;
   white-space: nowrap;
 }
 
-.introductionCopy > p:last-child {
-  max-width: 42ch;
-  margin: 14px 0 0;
-  color: #596477;
-  font-size: clamp(13px, 1vw, 15px);
-  letter-spacing: -0.025em;
-  line-height: 1.42;
+.heroCopy {
+  padding-bottom: 4px;
 }
 
-.portraitFrame {
-  display: flex;
-  min-width: 0;
-  min-height: 0;
-  align-items: flex-end;
-  justify-content: center;
-  overflow: hidden;
-  background: #ffffff;
+.heroCopy p {
+  max-width: 38ch;
+  margin: 0;
+  color: var(--home-ink-soft);
+  font-size: clamp(15px, 1.25vw, 18px);
+  letter-spacing: var(--tracking-content);
+  line-height: 1.55;
+  text-wrap: pretty;
 }
 
-.portraitFrame img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
+.heroCopy p + p {
+  margin-top: 18px;
+  color: var(--home-ink-faint);
+  font-size: 13px;
+}
+
+.introductionRail {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.72fr) minmax(0, 1.28fr);
+  gap: clamp(40px, 6vw, 84px);
+  margin-top: clamp(68px, 7vw, 96px);
+  padding-top: clamp(24px, 3vw, 34px);
+  align-items: start;
+  border-top: 1px solid var(--color-rule);
+}
+
+.introductionRailCopy {
+  padding: 0;
+}
+
+.introductionRailCopy > p:last-child {
+  max-width: 34ch;
+  margin: 11px 0 0;
+  color: var(--home-ink-soft);
+  font-size: 14px;
+  letter-spacing: var(--tracking-content);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.introductionControls {
+  width: min(100%, 552px);
+  justify-self: end;
 }
 
 .introductionActions {
-  position: absolute;
-  z-index: 2;
-  right: 32px;
-  bottom: 32px;
   display: flex;
-  column-gap: 39px;
-  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
 }
 
 .introductionActionItem {
-  display: contents;
+  flex: 0 0 270px;
+  width: 270px;
 }
 
 .introductionButton {
-  position: relative;
-  z-index: 1;
   display: inline-flex;
-  width: 200px;
-  height: 36px;
-  padding: 0 24px;
+  width: 270px;
+  height: 45px;
+  min-height: 45px;
+  padding: 0 14px 0 22px;
   align-items: center;
-  justify-content: center;
-  border: 0;
-  border-radius: 999px;
-  background: var(--introduction-button-background);
-  color: var(--introduction-button-color);
+  justify-content: space-between;
+  gap: 26px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--color-text);
   cursor: pointer;
-  font-size: 15px;
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-tight);
-  line-height: 1.2;
-  opacity: 0.84;
-  text-align: center;
-  transform: none;
-  transition: background-color var(--duration-fast) var(--ease-standard);
+  text-align: left;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
   -webkit-tap-highlight-color: transparent;
 }
 
-.introductionButton:focus,
-.introductionButton:focus-visible,
-.introductionButton:active {
-  border-radius: 999px;
-  background: var(--introduction-button-background);
-  box-shadow: none;
-  color: var(--introduction-button-color);
-  filter: none;
-  outline: none;
-  transform: none;
-}
-
-.introductionButton:hover {
-  background: var(--introduction-button-hover-background);
-}
-
 .introductionButtonLabel {
-  position: relative;
-  z-index: 3;
-  padding: 4px 8px;
-  background: transparent;
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-content);
+  line-height: 1.2;
+}
+
+.introductionButtonArrow {
+  display: grid;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  color: currentColor;
+  font-size: 18px;
+  font-weight: var(--font-weight-regular);
+  line-height: 1;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.introductionButton[aria-expanded="true"] {
+  border-color: var(--color-text);
+  background: var(--color-text);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--color-text) 7%, transparent);
+  color: var(--color-canvas);
+}
+
+.introductionButton[aria-expanded="true"] .introductionButtonArrow {
+  transform: rotate(180deg);
+}
+
+.introductionButton:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 3px;
 }
 
 .introductionPanel {
-  position: absolute;
-  z-index: 2;
-  top: auto;
-  right: 32px;
-  bottom: 100px;
-  width: min(500px, calc(100% - 760px));
-  max-height: calc(100% - 100px);
-  overflow: auto;
-  border: 1px solid rgba(255, 255, 255, 0);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0);
-  box-shadow: 0 18px 54px rgba(0, 0, 0, 0);
-  color: #212121;
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-top: 0;
+  overflow: hidden;
+  border: 0 solid var(--color-border-subtle);
+  border-radius: 18px;
+  background: transparent;
+  box-shadow: none;
   opacity: 0;
-  pointer-events: none;
-  transform: translateX(18px);
   transition:
-    background-color 320ms var(--ease-standard),
-    border-color 320ms var(--ease-standard),
-    box-shadow 320ms var(--ease-standard),
-    opacity 260ms var(--ease-standard),
-    transform 320ms var(--ease-emphasized);
+    grid-template-rows 520ms var(--ease-emphasized),
+    border-width 200ms var(--ease-standard),
+    margin-top 520ms var(--ease-emphasized),
+    background-color 260ms var(--ease-standard),
+    box-shadow 260ms var(--ease-standard),
+    opacity 300ms var(--ease-standard),
+    visibility 0s linear 520ms;
   visibility: hidden;
 }
 
 .introductionPanelOpen {
-  border-color: rgba(255, 255, 255, 0.72);
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.2);
+  grid-template-rows: 1fr;
+  margin-top: 18px;
+  border-width: 1px;
+  background: color-mix(
+    in srgb,
+    var(--color-surface-muted) 34%,
+    var(--color-canvas)
+  );
+  box-shadow: 0 18px 48px color-mix(in srgb, var(--color-text) 6%, transparent);
   opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0);
+  transition:
+    grid-template-rows 560ms var(--ease-emphasized),
+    border-width 200ms var(--ease-standard),
+    margin-top 560ms var(--ease-emphasized),
+    background-color 260ms var(--ease-standard),
+    box-shadow 260ms var(--ease-standard),
+    opacity 320ms var(--ease-standard),
+    visibility 0s;
   visibility: visible;
 }
 
+.introductionPanelReveal {
+  min-height: 0;
+  overflow: hidden;
+}
+
 .introductionPanelContent {
-  padding: 26px 28px 28px;
-  animation: introduction-panel-content-in 240ms var(--ease-standard);
+  padding: clamp(26px, 3vw, 34px);
+  animation: introduction-panel-content-in 420ms var(--ease-emphasized);
 }
 
 .introductionPanelHeader {
-  display: flex;
-  gap: 24px;
-  align-items: flex-start;
-  justify-content: space-between;
+  position: relative;
+  min-width: 0;
+  padding-right: 42px;
 }
 
 .introductionPanelHeader h2 {
-  margin: 0;
+  margin: 13px 0 0;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(28px, 2.6vw, 38px);
+  font-size: clamp(32px, 3vw, 42px);
   font-weight: 400;
-  letter-spacing: -0.045em;
-  line-height: 1;
+  letter-spacing: -0.055em;
+  line-height: 0.96;
+  text-wrap: balance;
 }
 
 .introductionPanelClose {
+  position: absolute;
+  top: 0;
+  right: 0;
   display: grid;
-  flex: 0 0 auto;
   width: 32px;
   height: 32px;
   padding: 0;
   place-items: center;
-  border: 0;
+  border: 1px solid var(--color-border-subtle);
   border-radius: 50%;
-  background: rgba(21, 21, 21, 0.1);
-  color: #212121;
+  background: transparent;
+  color: var(--home-ink-soft);
   cursor: pointer;
-  font-size: 21px;
+  font-size: 20px;
   line-height: 1;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
 }
 
 .introductionPanelBody {
-  margin-top: 20px;
-  color: #494952;
-  font-size: 15px;
-  line-height: 1.55;
+  max-width: 58ch;
+  margin-top: clamp(24px, 3vw, 32px);
+  color: var(--home-ink-soft);
+  font-size: clamp(15px, 1.22vw, 17px);
+  letter-spacing: var(--tracking-content);
+  line-height: 1.62;
 }
 
 .introductionPanelBody p {
@@ -258,13 +401,55 @@
 }
 
 .introductionPanelBody p + p {
-  margin-top: 14px;
+  margin-top: 18px;
+}
+
+.workIntroduction {
+  margin-top: clamp(112px, 11vw, 164px);
+  padding-top: 0;
+}
+
+.workTopline {
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.workStatement {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(12px, 1.4vw, 18px);
+  margin-top: clamp(28px, 3vw, 38px);
+  padding: clamp(14px, 1.5vw, 20px) 0 clamp(18px, 2vw, 26px);
+  align-items: start;
+}
+
+.workStatement h2 {
+  max-width: none;
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(54px, 4.903vw, 70.6px);
+  font-weight: 400;
+  letter-spacing: -0.065em;
+  line-height: 0.9;
+  text-wrap: balance;
+}
+
+.workStatement > p {
+  width: min(100%, 50ch);
+  max-width: none;
+  margin: 0;
+  justify-self: start;
+  color: var(--home-ink-soft);
+  font-size: clamp(14px, 1.12vw, 16px);
+  letter-spacing: var(--tracking-content);
+  line-height: 1.55;
+  text-wrap: pretty;
 }
 
 @keyframes introduction-panel-content-in {
   from {
     opacity: 0;
-    transform: translateY(7px);
+    transform: translateY(10px);
   }
 
   to {
@@ -273,157 +458,253 @@
   }
 }
 
-@media (max-width: 1100px) {
-  .heroExpanded {
-    min-height: 760px;
+@media (hover: hover) and (pointer: fine) {
+  .introductionButton:not([aria-expanded="true"]):hover {
+    background: color-mix(
+      in srgb,
+      var(--color-surface-muted) 64%,
+      var(--color-canvas)
+    );
+    border-color: var(--color-text);
+    box-shadow: 0 10px 28px color-mix(in srgb, var(--color-text) 7%, transparent);
+    transform: translateY(-2px);
   }
 
-  .introductionPanel {
-    top: auto;
-    right: 24px;
-    bottom: 100px;
-    left: 24px;
-    width: auto;
-    max-height: none;
-    transform: translateY(12px);
+  .introductionButton:not([aria-expanded="true"]):hover
+    .introductionButtonArrow {
+    transform: rotate(90deg);
   }
 
-  .introductionPanelOpen {
-    transform: translateY(0);
+  .introductionPanelClose:hover {
+    background: var(--color-text);
+    color: var(--color-canvas);
   }
 }
 
-@media (max-width: 860px) {
-  .hero {
-    width: calc(100% - 40px);
-    height: clamp(600px, calc(100svh - 64px), 820px);
-    min-height: 0;
-    aspect-ratio: auto;
-    margin-top: var(--site-header-height);
-  }
-
-  .introductionCard {
-    top: 24px;
-    left: 24px;
-    grid-template-columns: minmax(0, 1fr) minmax(180px, 0.72fr);
-    gap: 14px;
-    width: min(660px, calc(100% - 48px));
-    height: 260px;
-    padding: 18px 14px 16px 22px;
-  }
-
-  .introductionCopy h1 {
-    font-size: clamp(36px, 5.2vw, 44px);
-  }
-
-  .introductionCopy > p:last-child {
-    margin-top: 14px;
-    font-size: 14px;
-  }
-
-  .introductionActions {
-    right: 24px;
-    bottom: 24px;
-  }
-
-  .introductionPanel {
-    bottom: 84px;
-  }
-
-  .introductionButton {
-    width: 170px;
-    height: 36px;
-    padding: 0 20px;
-    font-size: 14px;
-  }
-
-}
-
-@media (max-width: 620px) {
-  .hero {
-    height: max(760px, calc(100svh - 64px));
-  }
-
-  .heroImage {
-    object-position: center;
-  }
-
-  .introductionCard {
-    top: 16px;
-    right: 16px;
-    bottom: 120px;
-    left: 16px;
-    grid-template-rows: auto minmax(0, 1fr);
+@media (max-width: 820px) {
+  .heroStatement {
     grid-template-columns: 1fr;
-    gap: 12px;
-    width: auto;
-    height: auto;
-    padding: 34px 28px 0;
-    border-radius: 12px;
-    transform: none;
+    gap: 30px;
   }
 
-  .introductionCopy h1 {
-    font-size: clamp(43px, 13vw, 62px);
-    line-height: 0.96;
+  .heroCopy p {
+    max-width: 48ch;
   }
 
-  .introductionCopy > p:last-child {
-    margin-top: 26px;
-    font-size: 16px;
+  .workStatement {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
   }
 
-  .portraitFrame {
-    width: min(88%, 360px);
-    justify-self: end;
+  .workStatement > p {
+    width: min(100%, 48ch);
+    max-width: 48ch;
+    grid-column: auto;
+    justify-self: start;
+  }
+
+  .introductionRail {
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
 
   .introductionActions {
-    right: 16px;
-    bottom: 16px;
-    left: 16px;
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
 
-  .introductionButton {
-    flex: 1 1 0;
-    width: auto;
-    max-width: 160px;
-    height: 36px;
-    padding: 0 12px;
+  .introductionControls {
+    justify-self: start;
+  }
+
+  .introductionActionItem {
+    flex: 0 0 270px;
+    width: 270px;
+  }
+}
+
+@media (max-width: 640px) {
+  .homePage {
+    --home-inline-inset: 40px;
+  }
+
+  .homeIntroduction {
+    padding-top: 40px;
+  }
+
+  .heroTopline {
+    --hero-topline-portrait-size: 92px;
+    min-height: var(--hero-topline-portrait-size);
+  }
+
+  .workTopline {
+    min-height: 30px;
+  }
+
+  .heroToplineEndpoint {
+    gap: 14px;
+  }
+
+  .heroIdentityLinks {
+    max-width: 176px;
+    transform: translateY(-18px);
+  }
+
+  .heroTopline > p:first-child {
+    transform: translateY(-18px);
+  }
+
+  .workTopline p:last-child {
+    max-width: 18ch;
+  }
+
+  .heroStatement {
+    gap: 26px;
+    padding-top: 32px;
+  }
+
+  .heroStatement h1 {
+    font-size: clamp(47px, 13.8vw, 66px);
+    line-height: 0.9;
+  }
+
+  .heroCopy p {
+    font-size: 14px;
+    line-height: 1.52;
+  }
+
+  .workStatement {
+    margin-top: 26px;
+    padding: 18px 0 24px;
+  }
+
+  .workStatement > p {
+    font-size: 14px;
+    line-height: 1.52;
+  }
+
+  .heroCopy p + p {
+    margin-top: 14px;
     font-size: 12px;
   }
 
+  .introductionRail {
+    gap: 24px;
+    margin-top: 58px;
+    padding-top: 22px;
+  }
+
+  .introductionRailCopy > p:last-child {
+    font-size: 13px;
+  }
+
+  .introductionActions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .introductionControls {
+    width: 100%;
+  }
+
+  .introductionActionItem {
+    width: 100%;
+  }
+
+  .introductionButton {
+    width: 100%;
+    height: 45px;
+    min-height: 45px;
+    padding: 0 13px 0 20px;
+  }
+
   .introductionButtonLabel {
-    padding-inline: 4px;
+    font-size: 14px;
   }
 
-  .heroExpanded {
-    height: max(1300px, calc(100svh - 64px));
-  }
-
-  .heroExpanded .introductionCard {
-    bottom: 640px;
+  .introductionButtonArrow {
+    width: 24px;
+    height: 24px;
   }
 
   .introductionPanel {
-    top: auto;
-    right: 16px;
-    bottom: 68px;
-    left: 16px;
-    height: auto;
-    max-height: 560px;
-    border-radius: 12px;
+    border-radius: 16px;
   }
 
   .introductionPanelContent {
-    padding: 22px 20px 24px;
+    padding: 24px 22px 28px;
+  }
+
+  .introductionPanelHeader {
+    padding-right: 44px;
+  }
+
+  .introductionPanelHeader h2 {
+    font-size: 32px;
+  }
+
+  .introductionPanelBody {
+    font-size: 14px;
+    line-height: 1.58;
+  }
+
+  .workIntroduction {
+    margin-top: 104px;
+  }
+
+  .workTopline {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .workStatement h2 {
+    max-width: 7ch;
+    font-size: clamp(49px, 14vw, 66px);
+    line-height: 0.9;
   }
 }
 
+@media (max-width: 360px) {
+  .homePage {
+    --home-inline-inset: 32px;
+  }
+
+  .heroTopline p,
+  .workTopline p,
+  .introductionKicker,
+  .introductionPanelHeader > p {
+    font-size: 10px;
+  }
+
+  .heroStatement h1 {
+    font-size: 45px;
+  }
+
+  .heroTopline {
+    --hero-topline-portrait-size: 76px;
+  }
+
+  .heroToplineEndpoint {
+    gap: 10px;
+  }
+
+  .heroIdentityLinks {
+    max-width: 104px;
+    font-size: 10px;
+    transform: translateY(-16px);
+  }
+
+  .heroTopline > p:first-child {
+    transform: translateY(-16px);
+  }
+
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .introductionButton,
+  .introductionButtonArrow,
   .introductionPanel,
-  .introductionPanelContent {
+  .introductionPanelContent,
+  .introductionPanelClose {
     animation: none;
     transition: none;
   }
