@@ -44,6 +44,8 @@ function MasonryGallery({
             <div
               className={styles.galleryItem}
               role="listitem"
+              data-position={position + 1}
+              data-person-id={person.id}
               key={`${person.id}-${position}`}
             >
               <figure
@@ -51,33 +53,24 @@ function MasonryGallery({
                 data-has-image={person.image ? "true" : "false"}
               >
                 <div className={styles.portrait}>
-                  {person.image ? (
-                    // Portraits are local editorial assets; native lazy loading keeps
-                    // the gallery free from additional image runtime code.
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      className={styles.portraitImage}
-                      src={person.image.src}
-                      alt={person.image.alt}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  ) : (
-                    <div
-                      className={styles.portraitPlaceholder}
-                      role="img"
-                      aria-label={`Portrait placeholder for ${person.name}`}
-                    >
-                      <span
-                        className={styles.placeholderHead}
-                        aria-hidden="true"
-                      />
-                      <span
-                        className={styles.placeholderBody}
-                        aria-hidden="true"
-                      />
-                    </div>
-                  )}
+                  {/* Local editorial portraits use individual focal points so
+                      the fixed card ratio never loses the subject's face. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    className={styles.portraitImage}
+                    src={person.image.src}
+                    alt={person.image.alt}
+                    loading="lazy"
+                    decoding="async"
+                    style={{
+                      objectPosition: person.image.position,
+                      transform:
+                        person.image.offsetX || person.image.scale
+                          ? `translateX(${person.image.offsetX ?? 0}%) scale(${person.image.scale ?? 1})`
+                        : undefined,
+                      transformOrigin: person.image.position,
+                    }}
+                  />
                 </div>
 
                 <figcaption className={styles.name}>{person.name}</figcaption>
@@ -133,24 +126,29 @@ export function PeopleGallery() {
       className={styles.feed}
       aria-label="People who shaped Vishva's thinking"
     >
-      <header
-        className={styles.peopleHero}
+      <section
+        className={styles.peopleHeroSection}
         aria-labelledby="people-hero-title"
       >
-        <div className={styles.heroTopline}>
-          <p className={styles.heroKicker}>People</p>
-          <p className={styles.heroDescriptor}>A living index of influence</p>
+        <div className={styles.peopleHeroHeading}>
+          <h1 id="people-hero-title">A record of influence.</h1>
         </div>
 
-        <div className={styles.heroStatement}>
-          <h1 id="people-hero-title">A record of influence.</h1>
-          <p className={styles.heroIntroduction}>
-            These are people whose work, choices, and ways of thinking have
-            shaped how I see the world. I return to their ideas often—not to
-            imitate them, but to expand what I believe is possible.
-          </p>
-        </div>
-      </header>
+        <header className={styles.peopleHero} aria-label="People introduction">
+          <div className={styles.heroTopline}>
+            <p className={styles.heroKicker}>People</p>
+            <p className={styles.heroDescriptor}>A living index of influence</p>
+          </div>
+
+          <div className={styles.heroStatement}>
+            <p className={styles.heroIntroduction}>
+              These are people whose work, choices, and ways of thinking have
+              shaped how I see the world. I return to their ideas often—not to
+              imitate them, but to expand what I believe is possible.
+            </p>
+          </div>
+        </header>
+      </section>
 
       <header className={styles.profilesHeader}>
         <div>

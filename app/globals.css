@@ -314,6 +314,14 @@ html[data-posts-nav="hidden"] .site-header {
   opacity: 0;
 }
 
+body:has(.posts-route) .header-rule {
+  opacity: 1;
+}
+
+html[data-posts-archive-crossed="true"] body:has(.posts-route) .header-rule {
+  opacity: 0;
+}
+
 .page {
   min-height: calc(100vh - 61px);
 }

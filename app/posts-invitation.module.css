@@ -110,11 +110,17 @@
   white-space: nowrap;
 }
 
-.subscribeRow input:focus-visible,
 .subscribeRow button:focus-visible {
   border-radius: 2px;
   outline: 2px solid var(--color-focus);
   outline-offset: 3px;
+}
+
+.subscribeRow input:focus,
+.subscribeRow input:focus-visible {
+  border: 0;
+  outline: 0;
+  box-shadow: none;
 }
 
 .subscribeForm > p {
@@ -124,7 +130,7 @@
   font-size: 12px;
   font-weight: 400;
   line-height: 19.2px;
-  text-align: center;
+  text-align: right;
 }
 
 @media (max-width: 1024px) {

@@ -115,8 +115,198 @@ type BlogPost = (typeof blogPosts)[number];
 type BlogPostGroup = { month: string; posts: BlogPost[] };
 type CatalogId = (typeof workCategories)[number]["id"];
 
+const footerMapMinScale = 1;
+const footerMapMaxScale = 1.09;
+
+function clampFooterMapScale(scale: number) {
+  return Math.min(footerMapMaxScale, Math.max(footerMapMinScale, scale));
+}
+
 function normalizeSearch(value: string) {
   return value.trim().toLocaleLowerCase();
+}
+
+function FooterLocationMap() {
+  const [mapScale, setMapScale] = useState(footerMapMinScale);
+  const [markerJumpKey, setMarkerJumpKey] = useState(0);
+  const mapViewportRef = useRef<HTMLDivElement>(null);
+  const touchPointersRef = useRef(
+    new Map<number, { clientX: number; clientY: number }>(),
+  );
+  const previousPinchDistanceRef = useRef<number | null>(null);
+  const suppressNextClickRef = useRef(false);
+
+  useEffect(() => {
+    const mapViewport = mapViewportRef.current;
+
+    if (!mapViewport) return;
+
+    function handleWheel(event: WheelEvent) {
+      event.preventDefault();
+      const scaleDelta = Math.max(
+        -0.018,
+        Math.min(0.018, event.deltaY * -0.00035),
+      );
+
+      setMapScale((scale) => clampFooterMapScale(scale + scaleDelta));
+    }
+
+    mapViewport.addEventListener("wheel", handleWheel, { passive: false });
+    return () => mapViewport.removeEventListener("wheel", handleWheel);
+  }, []);
+
+  function retriggerMarkerJump() {
+    setMarkerJumpKey((key) => key + 1);
+  }
+
+  function updateTouchPointer(
+    pointerId: number,
+    clientX: number,
+    clientY: number,
+  ) {
+    touchPointersRef.current.set(pointerId, { clientX, clientY });
+  }
+
+  function measurePinchDistance() {
+    const pointers = Array.from(touchPointersRef.current.values());
+
+    if (pointers.length !== 2) return null;
+
+    return Math.hypot(
+      pointers[0].clientX - pointers[1].clientX,
+      pointers[0].clientY - pointers[1].clientY,
+    );
+  }
+
+  return (
+    <aside className={styles.footerMap} aria-label="Location map">
+      <div
+        className={styles.mapViewport}
+        id="footer-location-map"
+        ref={mapViewportRef}
+        role="button"
+        tabIndex={0}
+        aria-label="Vishvajith in the approximate Whitefield area, Bangalore 560066. Activate to animate the marker; use wheel or pinch to zoom."
+        onClick={() => {
+          if (suppressNextClickRef.current) return;
+          retriggerMarkerJump();
+        }}
+        onDoubleClick={(event) => event.preventDefault()}
+        onKeyDown={(event) => {
+          if (
+            !event.repeat &&
+            (event.key === "Enter" || event.key === " ")
+          ) {
+            event.preventDefault();
+            retriggerMarkerJump();
+          }
+        }}
+        onPointerDown={(event) => {
+          if (event.pointerType !== "touch") return;
+
+          event.currentTarget.setPointerCapture(event.pointerId);
+          updateTouchPointer(
+            event.pointerId,
+            event.clientX,
+            event.clientY,
+          );
+          previousPinchDistanceRef.current = measurePinchDistance();
+        }}
+        onPointerMove={(event) => {
+          if (
+            event.pointerType !== "touch" ||
+            !touchPointersRef.current.has(event.pointerId)
+          ) {
+            return;
+          }
+
+          updateTouchPointer(
+            event.pointerId,
+            event.clientX,
+            event.clientY,
+          );
+          const pinchDistance = measurePinchDistance();
+          const previousDistance = previousPinchDistanceRef.current;
+
+          if (pinchDistance && previousDistance) {
+            event.preventDefault();
+            suppressNextClickRef.current = true;
+            setMapScale((scale) =>
+              clampFooterMapScale(scale * (pinchDistance / previousDistance)),
+            );
+          }
+
+          previousPinchDistanceRef.current = pinchDistance;
+        }}
+        onPointerUp={(event) => {
+          touchPointersRef.current.delete(event.pointerId);
+          previousPinchDistanceRef.current = measurePinchDistance();
+          window.setTimeout(() => {
+            suppressNextClickRef.current = false;
+          }, 0);
+        }}
+        onPointerCancel={(event) => {
+          touchPointersRef.current.delete(event.pointerId);
+          previousPinchDistanceRef.current = measurePinchDistance();
+          suppressNextClickRef.current = false;
+        }}
+      >
+        <svg
+          className={styles.mapArtwork}
+          style={{ transform: `scale(${mapScale})` }}
+          viewBox="0 0 224 140"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            className={styles.mapGreenSpace}
+            d="M-8 0h73l20 23-14 24-54 5L-8 35ZM174 88l58-12v72h-77l-5-31Z"
+          />
+          <path
+            className={styles.mapWater}
+            d="M-8 111c28-18 47-17 67-4 16 10 36 12 59 2 25-10 49-9 114 7v32H-8Z"
+          />
+          <g className={styles.mapMinorRoads}>
+            <path d="M-9 29 231 96" />
+            <path d="M21-7 81 148" />
+            <path d="m-4 82 229-49" />
+            <path d="M139-8 108 148" />
+            <path d="m179-7 19 155" />
+            <path d="M-8 125 232 55" />
+          </g>
+          <g className={styles.mapMajorRoads}>
+            <path d="M-12 62c48 7 75 10 105 5 40-8 82-19 144-16" />
+            <path d="M63-10c6 37 19 62 52 82 29 18 45 40 48 79" />
+          </g>
+          <g className={styles.mapBlocks}>
+            <path d="m86 15 31-7 12 20-29 8Z" />
+            <path d="m154 24 30-4 6 17-28 5Z" />
+            <path d="m27 58 30 4-4 20-31-6Z" />
+            <path d="m168 63 28-5 8 17-31 8Z" />
+            <path d="m79 91 28-7 8 19-30 8Z" />
+          </g>
+        </svg>
+
+        <div className={styles.mapMarker} aria-hidden="true">
+          <span className={styles.mapMarkerPoint} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className={`${styles.mapMarkerAvatar} ${
+              markerJumpKey > 0 ? styles.mapMarkerAvatarJumping : ""
+            }`}
+            key={markerJumpKey}
+            src="/map-avatar-marker.png"
+            alt=""
+          />
+        </div>
+      </div>
+
+      <div className={styles.mapCaption}>
+        <strong>Whitefield</strong>
+        <span>Bangalore · 560066</span>
+      </div>
+    </aside>
+  );
 }
 
 export function WorkShowcase() {
@@ -304,7 +494,6 @@ export function WorkShowcase() {
         <div className={styles.footerDetails}>
           <p className={styles.footerLabel}>Contact</p>
           <p>hello@vishvous.com</p>
-          <p>Based everywhere</p>
         </div>
 
         <form
@@ -332,7 +521,7 @@ export function WorkShowcase() {
           </button>
         </form>
 
-        <div className={styles.footerSpacer} aria-hidden="true" />
+        <FooterLocationMap />
       </footer>
 
       <dialog

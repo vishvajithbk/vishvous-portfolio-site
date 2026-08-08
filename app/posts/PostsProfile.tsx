@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import styles from "./posts.module.css";
 import { thoughts } from "./thoughts";
+import type { ThoughtOrder } from "./ThoughtTimeline";
 
 const PHOTO_TRANSITION_MS = 260;
 
@@ -11,100 +12,34 @@ const profile = {
   name: "Vishvajith BK",
   handle: "@vishvajith_bk",
   bio: "chasing questions that bend reality",
-  joined: "Joined January 2026",
 } as const;
 
-function ProfileAvatar({
-  compact = false,
-  onOpen,
-}: {
-  compact?: boolean;
-  onOpen?: () => void;
-}) {
-  const className = `${styles.avatarSilhouette} ${
-    compact ? styles.compactAvatar : styles.profileAvatar
-  }`;
-
-  if (compact) {
-    return <span className={className} aria-hidden="true" />;
-  }
-
+function ProfileAvatar({ onOpen }: { onOpen: () => void }) {
   return (
     <button
       type="button"
-      className={className}
+      className={`${styles.avatarSilhouette} ${styles.profileAvatar}`}
       aria-label={`Open original profile photo of ${profile.name}`}
       onClick={onOpen}
     />
   );
 }
 
-export function PostsProfile() {
-  const profileHeaderRef = useRef<HTMLElement>(null);
+export function PostsProfile({
+  order,
+  onToggleOrder,
+}: {
+  order: ThoughtOrder;
+  onToggleOrder: () => void;
+}) {
   const photoDialogRef = useRef<HTMLDialogElement>(null);
   const photoCloseTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const root = document.documentElement;
-    const profileHeader = profileHeaderRef.current;
-    let previousScrollY = window.scrollY;
-    let frameId = 0;
-
-    if (!profileHeader) {
-      return;
-    }
-
-    root.dataset.postsNav = "visible";
-
-    function updateHeaderRule() {
-      const siteHeaderHeight = Number.parseFloat(
-        window
-          .getComputedStyle(root)
-          .getPropertyValue("--site-header-height"),
-      );
-
-      root.dataset.postsProfile =
-        profileHeader.getBoundingClientRect().bottom > siteHeaderHeight
-          ? "visible"
-          : "gone";
-    }
-
-    function updateNavigation() {
-      const currentScrollY = window.scrollY;
-      const scrollDelta = currentScrollY - previousScrollY;
-
-      if (currentScrollY <= 2 || scrollDelta < 0) {
-        root.dataset.postsNav = "visible";
-      } else if (scrollDelta > 0) {
-        root.dataset.postsNav = "hidden";
-      }
-
-      updateHeaderRule();
-      previousScrollY = currentScrollY;
-      frameId = 0;
-    }
-
-    function handleScroll() {
-      if (!frameId) {
-        frameId = window.requestAnimationFrame(updateNavigation);
-      }
-    }
-
-    updateHeaderRule();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", updateHeaderRule);
-
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", updateHeaderRule);
-      if (frameId) {
-        window.cancelAnimationFrame(frameId);
-      }
       if (photoCloseTimeoutRef.current) {
         window.clearTimeout(photoCloseTimeoutRef.current);
       }
-      delete root.dataset.postsNav;
-      delete root.dataset.postsProfile;
     };
   }, []);
 
@@ -148,25 +83,21 @@ export function PostsProfile() {
 
   return (
     <>
-      <div
-        className={styles.profileTakeover}
-        data-profile-takeover
-        aria-hidden="true"
-      >
-        <ProfileAvatar compact />
-        <span className={styles.takeoverIdentity}>
-          <strong>{profile.name}</strong>
-          <span>{profile.bio}</span>
-        </span>
-        <span className={styles.takeoverJoined}>{profile.joined}</span>
-      </div>
+      <section className={styles.profileHeader} aria-label="Posts profile">
+        <div className={styles.profileBanner}>
+          <div className={styles.profileBannerTopline}>
+            <p>Original notes</p>
+            <p>2026 — ongoing</p>
+          </div>
 
-      <section
-        ref={profileHeaderRef}
-        className={styles.profileHeader}
-        aria-label="Posts profile"
-      >
-        <div className={styles.profileBanner} aria-hidden="true" />
+          <div className={styles.profileBannerStatement}>
+            <h1>Thoughts, kept in motion.</h1>
+            <p>
+              Brief observations, unfinished questions, and ideas I want to
+              return to.
+            </p>
+          </div>
+        </div>
 
         <div className={styles.profileCard}>
           <ProfileAvatar onOpen={openProfilePhoto} />
@@ -194,7 +125,18 @@ export function PostsProfile() {
             </div>
             <div className={styles.profileFact}>
               <dt>Order</dt>
-              <dd>Newest first</dd>
+              <dd>
+                <button
+                  className={styles.orderButton}
+                  type="button"
+                  aria-label={`Show ${order === "newest" ? "oldest" : "newest"} thoughts first`}
+                  onClick={onToggleOrder}
+                >
+                  <span className={styles.orderButtonLabel} key={order}>
+                    {order === "newest" ? "Newest first" : "Oldest first"}
+                  </span>
+                </button>
+              </dd>
             </div>
           </dl>
         </div>

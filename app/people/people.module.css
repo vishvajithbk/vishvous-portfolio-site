@@ -15,7 +15,7 @@
     var(--color-canvas)
   );
   min-height: calc(100vh - 61px);
-  padding: 0 0 clamp(104px, 10vw, 144px);
+  padding: 0;
 }
 
 .feed {
@@ -23,12 +23,36 @@
   margin: 0;
 }
 
+.peopleHeroSection {
+  width: 100%;
+}
+
+.peopleHeroHeading {
+  display: flex;
+  width: var(--people-content-width);
+  margin: clamp(56px, 6vw, 88px) auto 0;
+  justify-content: flex-start;
+}
+
+.peopleHeroHeading h1 {
+  max-width: 12ch;
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--color-text);
+  font-size: clamp(52px, 5.4vw, 76px);
+  font-weight: 400;
+  letter-spacing: -0.06em;
+  line-height: 0.92;
+  text-align: left;
+  text-wrap: balance;
+}
+
 .peopleHero {
   position: relative;
   display: flex;
   width: var(--people-content-width);
   height: clamp(260px, 25vw, 310px);
-  margin: clamp(56px, 6vw, 88px) auto 0;
+  margin: clamp(26px, 3vw, 38px) auto 0;
   padding: clamp(26px, 3vw, 36px);
   overflow: hidden;
   flex-direction: column;
@@ -105,23 +129,12 @@
   position: relative;
   z-index: 1;
   display: flex;
-  max-width: min(720px, 74%);
-  margin-top: auto;
+  max-width: min(640px, 68%);
+  margin: auto;
+  align-items: center;
   flex-direction: column;
   gap: clamp(10px, 1.5vw, 16px);
-}
-
-.heroStatement h1 {
-  min-width: 0;
-  margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  color: #fbf6ed;
-  font-size: clamp(56px, 6vw, 82px);
-  font-weight: 400;
-  letter-spacing: -0.06em;
-  line-height: 0.9;
-  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.28);
-  text-wrap: balance;
+  text-align: center;
 }
 
 .heroIntroduction {
@@ -133,6 +146,42 @@
   line-height: 1.5;
   text-shadow: 0 1px 16px rgba(0, 0, 0, 0.4);
   text-wrap: pretty;
+}
+
+.peopleFooter {
+  position: relative;
+  display: flex;
+  width: var(--people-content-width);
+  min-height: 174px;
+  margin: clamp(90px, 10vw, 150px) auto 0;
+  padding: 42px 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  color: var(--people-ink-faint);
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.035em;
+}
+
+.peopleFooter::before {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  height: 1px;
+  background: var(--color-rule);
+  content: "";
+  transform: translateX(-50%);
+}
+
+.peopleFooter p {
+  margin: 0;
+}
+
+.peopleFooter a {
+  display: inline-flex;
+  gap: 9px;
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
 .profilesHeader {
@@ -308,16 +357,29 @@
     opacity: var(--state-hover-opacity);
     transform: translateY(0);
   }
+
+  .peopleFooter a:hover {
+    color: var(--color-text);
+  }
 }
 
 @media (max-width: 640px) {
   .peoplePage {
-    padding: 0 0 96px;
+    padding: 0;
+  }
+
+  .peopleHeroHeading {
+    margin-top: 40px;
+  }
+
+  .peopleHeroHeading h1 {
+    max-width: 8ch;
+    font-size: clamp(44px, 13vw, 58px);
   }
 
   .peopleHero {
     height: 340px;
-    margin-top: 40px;
+    margin-top: 24px;
     padding: 22px 20px 24px;
     border-radius: 12px;
     background-position: center center;
@@ -333,13 +395,8 @@
   }
 
   .heroStatement {
-    max-width: 100%;
+    max-width: min(36ch, 100%);
     gap: 16px;
-  }
-
-  .heroStatement h1 {
-    max-width: 7.5ch;
-    font-size: clamp(46px, 14vw, 62px);
   }
 
   .heroIntroduction {
@@ -394,6 +451,12 @@
     font-size: clamp(10px, 2.85vw, 11.5px);
     line-height: 1.16;
   }
+
+  .peopleFooter {
+    min-height: 140px;
+    margin-top: 84px;
+    padding-top: 28px;
+  }
 }
 
 @media (max-width: 360px) {
@@ -408,8 +471,8 @@
     font-size: 10px;
   }
 
-  .heroStatement h1 {
-    font-size: 48px;
+  .peopleHeroHeading h1 {
+    font-size: 46px;
   }
 
   .heroIntroduction {
@@ -433,7 +496,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .portrait,
-  .name {
+  .name,
+  .peopleFooter a {
     transition: none;
   }
 }

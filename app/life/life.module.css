@@ -1,0 +1,38 @@
+.lifePage {
+  display: grid;
+  min-height: calc(100vh - var(--site-header-height));
+  padding: clamp(48px, 6vw, 88px) clamp(20px, 5vw, 72px)
+    clamp(64px, 8vw, 112px);
+  background: var(--color-canvas);
+  color: var(--color-text);
+  place-items: start center;
+}
+
+.message {
+  /* 600px image plus the existing 1px border on either side. */
+  width: min(602px, 100%);
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: clamp(14px, 1.6vw, 22px);
+  background: #102554;
+  box-shadow: var(--shadow-subtle);
+}
+
+.messageImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1672 / 941;
+  object-fit: cover;
+}
+
+@media (max-width: 620px) {
+  .lifePage {
+    padding: 32px 16px 64px;
+  }
+
+  .message {
+    border-radius: 14px;
+  }
+}

@@ -34,7 +34,7 @@ test("server-renders the Vishvous shell", async () => {
   assert.match(html, /href="\/posts"/i);
   assert.match(html, /href="\/people"/i);
   assert.match(html, /href="\/signals"/i);
-  assert.match(html, /href="\/gallery"[^>]*>Gallery<\/a>/i);
+  assert.match(html, /href="\/life"[^>]*>Life<\/a>/i);
   assert.doesNotMatch(html, /href="\/work"/i);
   const navigation = html.match(
     /<nav[^>]*aria-label="Primary navigation"[^>]*>[\s\S]*?<\/nav>/i,
@@ -43,9 +43,9 @@ test("server-renders the Vishvous shell", async () => {
   const navigationItems = [
     'href="/">Home</a>',
     'href="/posts">Posts</a>',
-    'href="/gallery">Gallery</a>',
     'href="/people">People</a>',
     'href="/signals">Archive</a>',
+    'href="/life">Life</a>',
   ];
   for (let index = 1; index < navigationItems.length; index += 1) {
     assert.ok(
@@ -82,6 +82,7 @@ test("serves every dedicated content route with the shared shell", async () => {
     ["/posts", "Posts"],
     ["/people", "People"],
     ["/signals", "Archive"],
+    ["/life", "Life"],
     ["/gallery", "Gallery"],
     ["/research", "Work"],
   ]) {
@@ -125,7 +126,36 @@ test("renders the curated Archive playlist and reading index", async () => {
     /href="https:\/\/www\.youtube\.com\/playlist\?list=PLAVWgRxryYXI"/i,
   );
   assert.match(html, /aria-labelledby="watch-heading"/i);
+  assert.match(html, /aria-labelledby="books-heading"/i);
   assert.match(html, /aria-labelledby="read-heading"/i);
+  assert.ok(
+    html.indexOf('aria-labelledby="watch-heading"') <
+      html.indexOf('aria-labelledby="books-heading"') &&
+      html.indexOf('aria-labelledby="books-heading"') <
+        html.indexOf('aria-labelledby="read-heading"'),
+    "Books should render between The playlist and Selected writing",
+  );
+  assert.equal(
+    (html.match(/class="[^"]*bookCard[^"]*"/g) ?? []).length,
+    10,
+  );
+  assert.doesNotMatch(html, /book-summary-dialog|aria-haspopup="dialog"/i);
+  assert.doesNotMatch(html, /Personal notes coming later\./i);
+  for (const [title, author] of [
+    ["The Almanack of Naval Ravikant", "Eric Jorgenson"],
+    ["The Psychology of Money", "Morgan Housel"],
+    ["Sapiens", "Yuval Noah Harari"],
+    ["Thinking in Systems", "Donella H. Meadows"],
+    ["Fooled by Randomness", "Nassim Nicholas Taleb"],
+    ["The Rational Optimist", "Matt Ridley"],
+    ["The Fabric of Reality", "David Deutsch"],
+    ["Homo Deus", "Yuval Noah Harari"],
+    ["Poor Charlie(?:&#x27;|')s Almanack", "Charlie Munger"],
+    ["The Selfish Gene", "Richard Dawkins"],
+  ]) {
+    assert.match(html, new RegExp(title), title);
+    assert.match(html, new RegExp(author), author);
+  }
   assert.equal((html.match(/class="[^\"]*readingLink[^\"]*"/g) ?? []).length, 5);
 
   for (const title of [
@@ -147,7 +177,21 @@ test("renders the curated Archive playlist and reading index", async () => {
   assert.equal((html.match(/rel="noopener noreferrer"/g) ?? []).length, 6);
 });
 
-test("keeps Gallery empty and removes the former Work route", async () => {
+test("renders the Life empty state, keeps Gallery empty, and removes Work", async () => {
+  const lifeResponse = await render("/life");
+  assert.equal(lifeResponse.status, 200);
+
+  const lifeHtml = await lifeResponse.text();
+  assert.match(lifeHtml, /<title>Life — Vishvous<\/title>/i);
+  assert.match(lifeHtml, /aria-label="Life page"/i);
+  assert.match(lifeHtml, /src="\/life\/nothing-to-see-here-yet\.png"/i);
+  assert.match(lifeHtml, /alt="Nothing to see here yet\. Go touch some grass\."/i);
+  assert.doesNotMatch(lifeHtml, /aria-label="Life scrapbook"/i);
+  assert.doesNotMatch(lifeHtml, /Life, loosely kept\./i);
+
+  const careerResponse = await render("/career");
+  assert.equal(careerResponse.status, 404);
+
   const galleryResponse = await render("/gallery");
   assert.equal(galleryResponse.status, 200);
 
@@ -284,6 +328,20 @@ test("renders the image-ready Work showcase on Home", async () => {
   )?.[0];
   assert.ok(footer, "the Contact footer should render");
   assert.doesNotMatch(footer, />Links<|LinkedIn|Substack/i);
+  assert.match(footer, /aria-label="Location map"/i);
+  assert.match(
+    footer,
+    /role="button"[^>]*tabindex="0"[^>]*aria-label="Vishvajith in the approximate Whitefield area, Bangalore 560066\./i,
+  );
+  assert.match(footer, /src="\/map-avatar-marker\.png"/i);
+  assert.doesNotMatch(footer, />Vishvajith</i);
+  assert.match(footer, />Whitefield</i);
+  assert.match(footer, />Bangalore · 560066</i);
+  assert.doesNotMatch(
+    footer,
+    /Map zoom controls|Zoom in|Zoom out|Map zoom \d|Expand location map|Collapse location map|data-expanded/i,
+  );
+  assert.doesNotMatch(footer, /Whitefield, Bangalore · 560066/i);
   assert.match(html, /aria-label="Blog posts"/i);
   assert.match(html, /aria-label="Projects"/i);
   assert.match(html, /aria-label="Research"/i);
@@ -324,28 +382,36 @@ test("renders the image-ready Work showcase on Home", async () => {
   }
 });
 
-test("renders thirty thought cards on Posts", async () => {
+test("renders the editorial Posts profile and sixteen thought cards", async () => {
   const response = await render("/posts");
   assert.equal(response.status, 200);
 
   const html = await response.text();
-  assert.equal((html.match(/aria-label="Thought posted /g) ?? []).length, 30);
-  assert.equal((html.match(/aria-label="Copy thought"/g) ?? []).length, 30);
-  assert.equal((html.match(/aria-label="Like thought"/g) ?? []).length, 30);
-  assert.equal((html.match(/aria-label="Dislike thought"/g) ?? []).length, 30);
-  assert.equal((html.match(/<time /g) ?? []).length, 30);
+  assert.equal((html.match(/aria-label="Thought posted /g) ?? []).length, 16);
+  assert.equal((html.match(/aria-label="Copy thought"/g) ?? []).length, 16);
+  assert.equal((html.match(/aria-label="Like thought"/g) ?? []).length, 16);
+  assert.equal((html.match(/aria-label="Dislike thought"/g) ?? []).length, 16);
+  assert.equal((html.match(/<time /g) ?? []).length, 16);
   assert.match(html, /aria-label="Posts profile"/i);
-  assert.match(html, /data-profile-takeover/i);
+  assert.match(html, /<h1[^>]*>Thoughts, kept in motion\.<\/h1>/i);
   assert.match(html, /chasing questions that bend reality/i);
-  assert.match(html, /Joined January 2026/i);
+  assert.match(html, />Jan 2026</i);
   assert.match(html, />Original notes</i);
-  assert.match(html, />30</i);
+  assert.match(html, />16</i);
   assert.match(html, />Newest first</i);
-  assert.equal((html.match(/src="\/filter-circle\.svg"/g) ?? []).length, 1);
+  assert.match(html, /aria-labelledby="thought-archive-title"/i);
+  assert.match(html, /Observations, in sequence\./i);
+  assert.match(html, /aria-label="Notes archive range"/i);
+  assert.match(
+    html,
+    /16(?:<!-- -->)? entries · (?:<!-- -->)?newest(?:<!-- -->)? first/i,
+  );
+  assert.doesNotMatch(html, /data-profile-takeover/i);
+  assert.doesNotMatch(html, /src="\/filter-circle\.svg"/i);
   assert.match(html, /aria-label="Posts invitation"/i);
   assert.match(html, /Read my[\s\S]*Thoughts/i);
   assert.match(html, /placeholder="Enter email"/i);
-  assert.match(html, />Subscribe<\/button>/i);
+  assert.match(html, />Get notified<\/button>/i);
   assert.match(html, /Opt in to receive updates\. Unsubscribe anytime\./i);
   assert.ok(
     html.indexOf('aria-label="Posts profile"') <
@@ -357,36 +423,72 @@ test("renders thirty thought cards on Posts", async () => {
       html.indexOf('aria-label="Posts invitation"'),
     "the Posts invitation should appear after the thought cards",
   );
-  assert.match(html, /Believe you can and you(?:&#x27;|')re halfway there\./i);
-  assert.match(html, /Stars can(?:&#x27;|')t shine without darkness\./i);
+  assert.match(html, /Most people underestimate what ten years of working/i);
+  assert.match(html, /A life with ten priorities probably has none\./i);
+  assert.match(html, /What you perceive is a simulation crafted by your mind\./i);
 });
 
-test("renders the initial three-column People feed with names only", async () => {
+test("renders the curated 14-person feed in the requested order", async () => {
   const response = await render("/people");
   assert.equal(response.status, 200);
 
   const html = await response.text();
   assert.match(html, /aria-labelledby="people-hero-title"/i);
   assert.match(html, /<h1[^>]*id="people-hero-title"[^>]*>A record of influence\.<\/h1>/i);
+  assert.match(html, /aria-label="People introduction"/i);
   assert.match(
     html,
     /These are people whose work, choices, and ways of thinking have shaped how I see the world\./i,
   );
-  for (const name of [
+  const names = [
     "Sam Altman",
     "Elon Musk",
     "Ilya Sutskever",
-    "Geoffrey Hinton",
     "A. P. J. Abdul Kalam",
+    "Richard Feynman",
+    "Fei-Fei Li",
+    "Geoffrey Hinton",
+    "J. Jayalalithaa",
+    "David Deutsch",
     "Satish Dhawan",
-    "Jai Shankar",
-    "abcd",
-    "efgh",
-  ]) {
+    "S. Jaishankar",
+    "Vandana Shiva",
+    "Shamika Ravi",
+    "K. Annamalai",
+  ];
+
+  for (const name of names) {
     assert.match(html, new RegExp(name.replaceAll(".", "\\.")), name);
   }
 
-  assert.match(html, /Showing 15 of 40 people\. More load while scrolling\./i);
+  for (const [position, id] of [
+    "sam-altman",
+    "elon-musk",
+    "ilya-sutskever",
+    "apj-abdul-kalam",
+    "richard-feynman",
+    "fei-fei-li",
+    "geoffrey-hinton",
+    "j-jayalalithaa",
+  ].entries()) {
+    assert.match(
+      html,
+      new RegExp(
+        `data-position="${position + 1}" data-person-id="${id}"`,
+        "i",
+      ),
+      `${id} should be card ${position + 1}`,
+    );
+  }
+
+  assert.match(html, /All 14 people shown\./i);
+  assert.equal((html.match(/data-has-image="true"/g) || []).length, 14);
+  assert.equal((html.match(/alt="Portrait of /g) || []).length, 14);
+  assert.match(html, /src="\/people\/sam-altman\.jpg"/i);
+  assert.match(html, /src="\/people\/ilya-sutskever\.avif"/i);
+  assert.match(html, /src="\/people\/k-annamalai\.jpg"/i);
+  assert.doesNotMatch(html, /Portrait placeholder for/i);
+  assert.doesNotMatch(html, /temporary-person|abcd|efgh/i);
   assert.match(html, /These are people whose work, choices, and ways of thinking/i);
   assert.doesNotMatch(html, /src="\/image-portrait\.svg"/i);
   assert.ok(
@@ -397,4 +499,7 @@ test("renders the initial three-column People feed with names only", async () =>
   assert.doesNotMatch(html, /data-influence-line/i);
   assert.doesNotMatch(html, /These are the people who shaped/i);
   assert.doesNotMatch(html, /Add Member|Connecting|@user|23m ago/i);
+  assert.match(html, /aria-label="People page footer"/i);
+  assert.match(html, /A living index\. Revisited often\./i);
+  assert.match(html, /aria-label="Return to the top of People"/i);
 });

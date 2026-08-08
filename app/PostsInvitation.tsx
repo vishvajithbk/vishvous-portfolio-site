@@ -22,7 +22,7 @@ export function PostsInvitation() {
               placeholder="Enter email"
               autoComplete="email"
             />
-            <button type="submit">Subscribe</button>
+            <button type="submit">Get notified</button>
           </div>
           <p>Opt in to receive updates. Unsubscribe anytime.</p>
         </form>

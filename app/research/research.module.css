@@ -1,13 +1,11 @@
 .workPage {
   --work-media-placeholder: #d4d4d1;
-  --work-action-dark-background: #111111;
-  --work-action-dark-border: #202020;
-  --work-action-dark-color: #f8f8f5;
-  --work-action-dark-hover: #202020;
-  --work-action-light-background: #f5f5f1;
-  --work-action-light-border: #d8d8d2;
+  --work-action-dark-background: #000000;
+  --work-action-dark-border: #000000;
+  --work-action-dark-color: #ffffff;
+  --work-action-light-background: #ffffff;
+  --work-action-light-border: #d7d7d1;
   --work-action-light-color: #111111;
-  --work-action-light-hover: #ffffff;
   --work-catalog-heading: color-mix(
     in srgb,
     var(--color-text) 78%,
@@ -36,12 +34,12 @@
 
 :global([data-appearance="dark"]) .workPage {
   --work-media-placeholder: #d3d3d1;
-  --work-action-dark-background: #141414;
-  --work-action-dark-border: #292929;
-  --work-action-dark-hover: #222222;
-  --work-action-light-background: #f1f1ed;
-  --work-action-light-border: #f1f1ed;
-  --work-action-light-hover: #ffffff;
+  --work-action-dark-background: #000000;
+  --work-action-dark-border: #2f2f2f;
+  --work-action-dark-color: #ffffff;
+  --work-action-light-background: #ffffff;
+  --work-action-light-border: #ffffff;
+  --work-action-light-color: #111111;
 }
 
 .globeDivider {
@@ -160,12 +158,14 @@
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--tracking-meta);
   line-height: 1.15;
+  text-align: left;
   transition:
     background-color var(--duration-fast) var(--ease-standard),
     border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard),
-    opacity var(--duration-fast) var(--ease-standard),
     transform var(--duration-fast) var(--ease-standard);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .primaryButton {
@@ -179,6 +179,10 @@
   border-color: var(--work-action-light-border);
   background: var(--work-action-light-background);
   color: var(--work-action-light-color);
+}
+
+.primaryButton[aria-expanded="true"] {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
 }
 
 .cardCopy p {
@@ -248,10 +252,6 @@
   color: var(--footer-text);
   font-size: 14px;
   font-weight: var(--font-weight-medium);
-}
-
-.footerSpacer {
-  min-height: 1px;
 }
 
 .askForm {
@@ -340,6 +340,153 @@
 
 .askSubmit:not(:disabled) svg {
   transform: rotate(-90deg);
+}
+
+.footerMap {
+  position: relative;
+  width: min(100%, 224px);
+  height: 139px;
+  justify-self: end;
+}
+
+.mapViewport {
+  --map-anchor-x: 50%;
+  --map-anchor-y: 78%;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(21, 21, 21, 0.18);
+  border-radius: 18px;
+  background: #506f73;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  color: #151515;
+  cursor: pointer;
+  isolation: isolate;
+  overscroll-behavior: contain;
+  touch-action: none;
+  user-select: none;
+}
+
+.mapViewport:focus-visible {
+  outline: 2px solid var(--footer-text);
+  outline-offset: 3px;
+}
+
+.mapArtwork {
+  position: absolute;
+  inset: -1px;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  transform-origin: var(--map-anchor-x) var(--map-anchor-y);
+  transition: transform 180ms var(--ease-standard);
+}
+
+.mapGreenSpace {
+  fill: #416850;
+}
+
+.mapWater {
+  fill: #315d70;
+}
+
+.mapMinorRoads,
+.mapMajorRoads {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mapMinorRoads {
+  stroke: rgba(165, 175, 178, 0.82);
+  stroke-width: 4;
+}
+
+.mapMajorRoads {
+  stroke: #c0c5c6;
+  stroke-width: 7;
+}
+
+.mapBlocks {
+  fill: rgba(35, 50, 52, 0.32);
+}
+
+.mapMarker {
+  position: absolute;
+  z-index: 2;
+  top: var(--map-anchor-y);
+  left: var(--map-anchor-x);
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.mapMarkerPoint {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  background: #78c9d2;
+  box-shadow:
+    0 0 0 4px rgba(120, 201, 210, 0.2),
+    0 4px 12px rgba(11, 28, 32, 0.36);
+  transform: translate(-50%, -50%);
+}
+
+.mapMarkerAvatar {
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: auto;
+  height: 92px;
+  filter: drop-shadow(0 5px 5px rgba(7, 18, 20, 0.28));
+  transform: translateX(-50%) translateY(0) scale(1);
+  transform-origin: 50% 100%;
+  transition: transform 180ms var(--ease-emphasized);
+}
+
+.mapMarkerAvatarJumping {
+  animation: map-marker-jump 520ms var(--ease-emphasized);
+}
+
+.mapCaption {
+  position: absolute;
+  z-index: 3;
+  top: 100%;
+  left: 50%;
+  display: flex;
+  padding: 4px 6px;
+  align-items: baseline;
+  gap: 3px;
+  border: 1px solid rgba(21, 21, 21, 0.1);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  color: #151515;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.mapCaption strong {
+  font-size: 8px;
+  font-weight: var(--font-weight-interactive);
+  letter-spacing: var(--tracking-meta);
+  line-height: 1.1;
+}
+
+.mapCaption span {
+  color: rgba(21, 21, 21, 0.62);
+  font-size: 7px;
+  line-height: 1.1;
 }
 
 .catalogDialog {
@@ -770,18 +917,39 @@
   }
 }
 
+@keyframes map-marker-jump {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  42% {
+    transform: translateX(-50%) translateY(-7px) scale(1.025);
+  }
+
+  68% {
+    transform: translateX(-50%) translateY(0) scale(0.985);
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .actionButton:hover {
+    box-shadow: 0 10px 28px color-mix(in srgb, #000000 14%, transparent);
     transform: translateY(-2px);
   }
 
   .primaryButton:hover {
-    border-color: var(--work-action-dark-hover);
-    background: var(--work-action-dark-hover);
+    border-color: var(--work-action-dark-border);
+    background: var(--work-action-dark-background);
   }
 
   .secondaryButton:hover {
-    background: var(--work-action-light-hover);
+    border-color: #151515;
+    background: var(--work-action-light-background);
+  }
+
+  .mapViewport:hover .mapMarkerAvatar {
+    transform: translateX(-50%) translateY(0) scale(1.06);
   }
 
   .dialogClose:hover {
@@ -872,6 +1040,11 @@
     padding: 32px var(--footer-inline-padding) 44px;
   }
 
+  .footerMap {
+    width: min(100%, 224px);
+    height: 131px;
+  }
+
   .askForm {
     grid-row: 1;
     grid-column: 1 / -1;
@@ -906,6 +1079,7 @@
   }
 
   .siteFooter {
+    position: relative;
     grid-template-rows: auto auto;
     grid-template-columns: 1fr;
     gap: 28px;
@@ -920,8 +1094,18 @@
     justify-self: stretch;
   }
 
-  .footerSpacer {
-    display: none;
+  .footerMap {
+    position: relative;
+    width: min(224px, 100%);
+    height: 139px;
+    justify-self: end;
+  }
+
+  .mapViewport {
+    --map-anchor-x: 50%;
+    --map-anchor-y: 78%;
+
+    border-radius: 16px;
   }
 
   .catalogDialog {
@@ -1039,6 +1223,9 @@
   .catalogDialog,
   .catalogPanel,
   .dialogClose,
+  .mapArtwork,
+  .mapMarkerAvatar,
+  .mapMarkerAvatarJumping,
   .projectTile,
   .projectTile h3,
   .postCopy h3,

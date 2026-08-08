@@ -23,6 +23,13 @@ export type ArchiveReading = {
   url: string;
 };
 
+export type ArchiveBook = {
+  id: string;
+  title: string;
+  author: string;
+  summary: string;
+};
+
 export const playlist: ArchivePlaylist = {
   title: "Finance and Modelling",
   description:
@@ -136,5 +143,78 @@ export const readings: ArchiveReading[] = [
     description:
       "A framework for lasting personal change built around identity, vision, and internal goals.",
     url: "https://x.com/thedankoe/status/2010751592346030461",
+  },
+];
+
+export const books: ArchiveBook[] = [
+  {
+    id: "almanack-of-naval-ravikant",
+    title: "The Almanack of Naval Ravikant",
+    author: "Eric Jorgenson",
+    summary:
+      "Placeholder summary: this note will capture the ideas about wealth, judgment, happiness, and long-term thinking that I want to revisit from the book.",
+  },
+  {
+    id: "psychology-of-money",
+    title: "The Psychology of Money",
+    author: "Morgan Housel",
+    summary:
+      "Placeholder summary: this space will hold my reflections on how behavior, patience, incentives, and personal history shape financial decisions.",
+  },
+  {
+    id: "sapiens",
+    title: "Sapiens",
+    author: "Yuval Noah Harari",
+    summary:
+      "Placeholder summary: I will use this note to revisit the book's broad account of human history, shared stories, institutions, and social coordination.",
+  },
+  {
+    id: "thinking-in-systems",
+    title: "Thinking in Systems",
+    author: "Donella H. Meadows",
+    summary:
+      "Placeholder summary: this note will collect the systems concepts, feedback loops, leverage points, and practical lessons I found most useful.",
+  },
+  {
+    id: "fooled-by-randomness",
+    title: "Fooled by Randomness",
+    author: "Nassim Nicholas Taleb",
+    summary:
+      "Placeholder summary: this space will contain my takeaways on luck, uncertainty, survivorship bias, and the stories we invent after outcomes occur.",
+  },
+  {
+    id: "rational-optimist",
+    title: "The Rational Optimist",
+    author: "Matt Ridley",
+    summary:
+      "Placeholder summary: this note will hold my reflections on exchange, specialization, innovation, and the case for long-term optimism about human progress.",
+  },
+  {
+    id: "fabric-of-reality",
+    title: "The Fabric of Reality",
+    author: "David Deutsch",
+    summary:
+      "Placeholder summary: I will use this space to revisit the book's connections between knowledge, computation, quantum theory, and explanations of reality.",
+  },
+  {
+    id: "homo-deus",
+    title: "Homo Deus",
+    author: "Yuval Noah Harari",
+    summary:
+      "Placeholder summary: this note will collect my thoughts on the possible futures of humanity, technology, intelligence, and the stories that organize society.",
+  },
+  {
+    id: "poor-charlies-almanack",
+    title: "Poor Charlie's Almanack",
+    author: "Charlie Munger",
+    summary:
+      "Placeholder summary: this space will capture the mental models, multidisciplinary thinking, judgment, and practical wisdom I want to carry forward.",
+  },
+  {
+    id: "selfish-gene",
+    title: "The Selfish Gene",
+    author: "Richard Dawkins",
+    summary:
+      "Placeholder summary: I will return here to the book's gene-centered view of evolution and its ideas about cooperation, selection, and cultural transmission.",
   },
 ];

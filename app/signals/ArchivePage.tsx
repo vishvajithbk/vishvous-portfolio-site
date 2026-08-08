@@ -1,6 +1,7 @@
 import styles from "./archive.module.css";
+import { BookCatalog } from "./BookCatalog";
 import { PlaylistViewer } from "./PlaylistViewer";
-import { readings } from "./archive";
+import { books, readings } from "./archive";
 
 function ExternalArrow() {
   return (
@@ -29,8 +30,8 @@ export function ArchivePage() {
           <p className={styles.eyebrow}>A personal archive</p>
           <h1>Worth returning to.</h1>
           <p className={styles.heroDescription}>
-            A deliberately small collection of videos and writing—kept here
-            because good ideas reward another pass.
+            A deliberately small collection of videos, books, and writing—kept
+            here because good ideas reward another pass.
           </p>
         </div>
 
@@ -38,6 +39,10 @@ export function ArchivePage() {
           <div>
             <dt>Watch</dt>
             <dd>01 playlist</dd>
+          </div>
+          <div>
+            <dt>Books</dt>
+            <dd>{String(books.length).padStart(2, "0")} read</dd>
           </div>
           <div>
             <dt>Read</dt>
@@ -57,6 +62,25 @@ export function ArchivePage() {
         </header>
 
         <PlaylistViewer />
+      </section>
+
+      <section
+        className={`${styles.section} ${styles.booksSection}`}
+        aria-labelledby="books-heading"
+      >
+        <header className={styles.sectionHeader}>
+          <div>
+            <p className={styles.sectionKicker}>Books</p>
+            <h2 id="books-heading">Books</h2>
+            <p className={styles.sectionDescription}>
+              Books I have read so far, alongside the ideas and lessons I want
+              to carry forward.
+            </p>
+          </div>
+          <p className={styles.sectionCount}>{books.length} books</p>
+        </header>
+
+        <BookCatalog />
       </section>
 
       <section
